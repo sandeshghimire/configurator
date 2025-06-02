@@ -16,23 +16,27 @@ const MiddlewareFrameworksPage = () => {
   ];
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Select Middleware & Frameworks</h1>
-      <form className="space-y-4">
-        {frameworks.map((framework) => (
-          <div key={framework} className="flex items-center space-x-2">
-            <Checkbox id={framework.toLowerCase().replace(/[^a-z0-9]+/g, '-')} name="frameworks" value={framework} />
-            <Label htmlFor={framework.toLowerCase().replace(/[^a-z0-9]+/g, '-')} className="font-normal">
-              {framework}
-            </Label>
-          </div>
-        ))}
-        <Link href="/key-application-features" passHref> {/* Add Link component */}
-          <Button type="submit" className="mt-8 w-full">
-            Next
-          </Button>
-        </Link> {/* Close Link component */}
-      </form>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-xl font-bold text-center">Select Middleware & Frameworks</h1>
+          <form className="space-y-4">
+            {frameworks.map((framework) => (
+              <div key={framework} className="flex items-center space-x-2">
+                <Checkbox id={framework.toLowerCase().replace(/[^a-z0-9]+/g, '-')} name="frameworks" value={framework} />
+                <Label htmlFor={framework.toLowerCase().replace(/[^a-z0-9]+/g, '-')} className="font-normal text-sm">
+                  {framework}
+                </Label>
+              </div>
+            ))}
+            <Link href="/driver-development-needs" passHref>
+              <Button type="submit" className="w-full">
+                Next
+              </Button>
+            </Link>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

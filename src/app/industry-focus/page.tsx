@@ -15,32 +15,36 @@ const IndustryFocusPage = () => {
   ];
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Select Your Industry</h1>
-      <form>
-        <RadioGroup defaultValue="Automotive" className="space-y-2 mb-6">
-          {industries.map((industry) => (
-            <div key={industry} className="flex items-center space-x-2">
-              <RadioGroupItem value={industry} id={industry.toLowerCase().replace(/\s+/g, '-', )} />
-              <Label htmlFor={industry.toLowerCase().replace(/\s+/g, '-')}>{industry}</Label>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-xl font-bold text-center">Select Your Industry</h1>
+          <form className="space-y-4">
+            <RadioGroup defaultValue="Automotive" className="space-y-3">
+              {industries.map((industry) => (
+                <div key={industry} className="flex items-center space-x-2">
+                  <RadioGroupItem value={industry} id={industry.toLowerCase().replace(/\s+/g, '-',)} />
+                  <Label htmlFor={industry.toLowerCase().replace(/\s+/g, '-')}>{industry}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+            <div className="space-y-2">
+              <Label htmlFor="otherIndustry">If Other, please specify:</Label>
+              <Input
+                type="text"
+                id="otherIndustry"
+                name="otherIndustry"
+                placeholder="Enter your industry"
+              />
             </div>
-          ))}
-        </RadioGroup>
-        <div className="space-y-2">
-          <Label htmlFor="otherIndustry">If Other, please specify:</Label>
-          <Input
-            type="text"
-            id="otherIndustry"
-            name="otherIndustry"
-            placeholder="Enter your industry"
-          />
+            <Link href="/core-platform-selection" passHref>
+              <Button type="submit" className="w-full">
+                Next
+              </Button>
+            </Link>
+          </form>
         </div>
-        <Link href="/contact-information" passHref> {/* Updated Link href */}
-          <Button type="submit" className="mt-8 w-full">
-            Next
-          </Button>
-        </Link> {/* Close Link component */}
-      </form>
+      </div>
     </div>
   );
 };

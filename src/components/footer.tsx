@@ -3,8 +3,8 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-200 text-center p-4 mt-auto">
-      <p>&copy; 2025 Configurator. All rights reserved.</p>
+    <footer className="bg-gray-200 text-center p-2 flex-shrink-0 text-sm">
+      <p>&copy; 2025 SOC Configurator. All rights reserved.</p>
     </footer>
   );
 };

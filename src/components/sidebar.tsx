@@ -20,30 +20,25 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-72 bg-background p-4 border-r h-screen flex flex-col">
-      <div className="mb-4 p-2">
-        {/* You can add a logo or title here if you like */}
-        <h2 className="text-xl font-semibold">Configurator</h2>
+    <aside className="w-64 bg-background p-3 border-r flex-shrink-0 overflow-y-auto">
+      <div className="mb-3">
+        <h2 className="text-lg font-semibold">Navigation</h2>
       </div>
-      <nav className="flex-grow">
-        <ul>
-          {menuItems.map((item) => (
-            <li key={item.href} className="mb-1">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-left"
-                asChild
-              >
-                <Link href={item.href}>
-                  <item.icon className="mr-2 h-4 w-4" />
-                  {item.label}
-                </Link>
-              </Button>
-            </li>
-          ))}
-        </ul>
+      <nav className="space-y-1">
+        {menuItems.map((item) => (
+          <Button
+            key={item.href}
+            variant="ghost"
+            className="w-full justify-start text-left h-8 px-2 text-sm"
+            asChild
+          >
+            <Link href={item.href}>
+              <item.icon className="mr-2 h-3 w-3" />
+              <span className="truncate">{item.label}</span>
+            </Link>
+          </Button>
+        ))}
       </nav>
-      {/* You can add a footer or user profile section here if needed */}
     </aside>
   );
 };

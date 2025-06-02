@@ -25,43 +25,46 @@ const ReviewSubmitPage = () => {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Review & Submit</h1>
-      
-      <div className="mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Summary of Your Selections</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {Object.entries(formData).length > 0 ? (
-              Object.entries(formData).map(([key, value]) => (
-                <div key={key} className="flex flex-col p-3 border bg-slate-50 rounded-md shadow-sm">
-                  <span className="text-md font-semibold text-gray-700">{key}</span>
-                  <span className="text-sm text-gray-600 mt-1">
-                    {Array.isArray(value)
-                      ? value.join(', ')
-                      : typeof value === 'object' && value !== null
-                      ? JSON.stringify(value, null, 2) 
-                      : String(value)}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-gray-500">No selections available to display. Please go back and make your choices.</p>
-            )}
-          </CardContent>
-        </Card>
-        <p className="mt-4 text-xs text-gray-500 text-center">Note: The selections displayed are sample data. Actual data collection will be implemented.</p>
-      </div>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 p-4 overflow-y-auto">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <h1 className="text-xl font-bold text-center">Review & Submit</h1>
 
-      <div className="flex justify-between mt-8">
-        <Button variant="outline" asChild>
-          <Link href="/industry-focus">Edit Selections</Link>
-        </Button>
-        <Button onClick={handleSubmit}>
-          Submit Inquiry
-        </Button>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Summary of Your Selections</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {Object.entries(formData).length > 0 ? (
+                Object.entries(formData).map(([key, value]) => (
+                  <div key={key} className="flex flex-col p-2 border bg-slate-50 rounded-md">
+                    <span className="text-sm font-semibold text-gray-700">{key}</span>
+                    <span className="text-xs text-gray-600 mt-1">
+                      {Array.isArray(value)
+                        ? value.join(', ')
+                        : typeof value === 'object' && value !== null
+                          ? JSON.stringify(value, null, 2)
+                          : String(value)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">No selections available to display. Please go back and make your choices.</p>
+              )}
+            </CardContent>
+          </Card>
+
+          <p className="text-xs text-gray-500 text-center">Note: The selections displayed are sample data. Actual data collection will be implemented.</p>
+
+          <div className="flex justify-between pt-4">
+            <Button variant="outline" asChild>
+              <Link href="/industry-focus">Edit Selections</Link>
+            </Button>
+            <Button onClick={handleSubmit}>
+              Submit Inquiry
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

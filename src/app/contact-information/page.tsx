@@ -7,59 +7,64 @@ import { Textarea } from "@/components/ui/textarea";
 
 const ContactInformationPage = () => {
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Contact Information</h1>
-      <form className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="fullName">Full Name</Label>
-          <Input
-            type="text"
-            id="fullName"
-            name="fullName"
-            placeholder="Enter your full name"
-          />
+    <div className="h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-xl font-bold text-center">Contact Information</h1>
+          <form className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Company Email</Label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your company email"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="companyName">Company Name</Label>
+              <Input
+                type="text"
+                id="companyName"
+                name="companyName"
+                placeholder="Enter your company name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
+              <Input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="projectDescription">Brief Project Description (Optional)</Label>
+              <Textarea
+                id="projectDescription"
+                name="projectDescription"
+                placeholder="Enter a brief description of your project"
+                className="h-20"
+              />
+            </div>
+            <Link href="/review-submit" passHref>
+              <Button type="submit" className="w-full">
+                Review & Submit
+              </Button>
+            </Link>
+          </form>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Company Email</Label>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your company email"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="companyName">Company Name</Label>
-          <Input
-            type="text"
-            id="companyName"
-            name="companyName"
-            placeholder="Enter your company name"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
-          <Input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            placeholder="Enter your phone number"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="projectDescription">Brief Project Description (Optional)</Label>
-          <Textarea
-            id="projectDescription"
-            name="projectDescription"
-            placeholder="Enter a brief description of your project"
-          />
-        </div>
-        <Link href="/core-platform-selection" passHref> {/* Add Link component */}
-          <Button type="submit" className="mt-8 w-full">
-            Next
-          </Button>
-        </Link> {/* Close Link component */}
-      </form>
+      </div>
     </div>
   );
 };

@@ -17,23 +17,29 @@ const KeyApplicationFeaturesPage = () => {
   ];
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Select Key Application Features</h1>
-      <form className="space-y-4">
-        {features.map((feature) => (
-          <div key={feature} className="flex items-center space-x-2">
-            <Checkbox id={feature.toLowerCase().replace(/[^a-z0-9]+/g, '-')} name="features" value={feature} />
-            <Label htmlFor={feature.toLowerCase().replace(/[^a-z0-9]+/g, '-')} className="font-normal">
-              {feature}
-            </Label>
-          </div>
-        ))}
-        <Link href="/cloud-connectivity-strategy" passHref>
-          <Button type="submit" className="mt-8 w-full">
-            Next
-          </Button>
-        </Link>
-      </form>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-xl font-bold text-center">Select Key Application Features</h1>
+          <form className="space-y-4">
+            <div className="max-h-80 overflow-y-auto space-y-3">
+              {features.map((feature) => (
+                <div key={feature} className="flex items-center space-x-2">
+                  <Checkbox id={feature.toLowerCase().replace(/[^a-z0-9]+/g, '-')} name="features" value={feature} />
+                  <Label htmlFor={feature.toLowerCase().replace(/[^a-z0-9]+/g, '-')} className="font-normal text-sm">
+                    {feature}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            <Link href="/hardware-peripheral-requirements" passHref>
+              <Button type="submit" className="w-full">
+                Next
+              </Button>
+            </Link>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
