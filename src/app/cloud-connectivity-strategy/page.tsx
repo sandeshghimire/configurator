@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Cloud, Server, Database, Cpu, Shield, HelpCircle, Brain, BarChart3 } from "lucide-react";
+import { ArrowRight, Cloud, Server, Database, Cpu, Shield, HelpCircle, Brain, BarChart3, Loader2 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
 
@@ -155,10 +155,10 @@ const CloudConnectivityStrategyPage = () => {
     >
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Cloud Platform Selection */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Cloud Platform Preferences</h2>
-          <p className="text-xs text-gray-600">Select one or more cloud platforms you&apos;d like to consider (you can choose multiple)</p>
-          <div className="space-y-4">
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Cloud Platform Preferences</h2>
+          <p className="text-sm text-gray-600">Select one or more cloud platforms you&apos;d like to consider (you can choose multiple)</p>
+          <div className="space-y-6">
             {cloudPlatforms.map((platform) => {
               const IconComponent = platform.icon;
               const isSelected = selectedPlatforms.includes(platform.id);
@@ -169,8 +169,8 @@ const CloudConnectivityStrategyPage = () => {
                   role="button"
                   tabIndex={0}
                   aria-pressed={isSelected}
-                  className={`cursor-pointer transition-all duration-200 ${isSelected
-                    ? 'ring-2 ring-primary bg-primary/5 border-primary'
+                  className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${isSelected
+                    ? 'ring-2 ring-primary bg-primary/5 border-primary shadow-md'
                     : 'hover:bg-accent/50 hover:border-accent'
                     }`}
                   onClick={() => handlePlatformToggle(platform.id)}
@@ -181,27 +181,29 @@ const CloudConnectivityStrategyPage = () => {
                     }
                   }}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start space-x-3">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
                       <Checkbox
                         id={platform.id}
                         checked={isSelected}
                         onCheckedChange={() => handlePlatformToggle(platform.id)}
                         className="mt-1"
                       />
-                      <div className="flex items-start space-x-3 flex-1">
-                        <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      <div className="flex items-start space-x-4 flex-1">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-colors ${isSelected
+                            ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                            : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600'
                           }`}>
-                          <IconComponent className="h-4 w-4" />
+                          <IconComponent className="h-6 w-6" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={platform.id}
-                            className="font-semibold text-sm cursor-pointer"
+                            className="font-semibold text-lg cursor-pointer"
                           >
                             {platform.label}
                           </Label>
-                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                             {platform.description}
                           </p>
                         </div>
@@ -215,15 +217,15 @@ const CloudConnectivityStrategyPage = () => {
         </div>
 
         {/* IoT Platform Integration */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">IoT Platform Integration</h2>
-          <p className="text-xs text-gray-600">Choose your preferred approach for IoT device management and integration</p>
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">IoT Platform Integration</h2>
+          <p className="text-sm text-gray-600">Choose your preferred approach for IoT device management and integration</p>
           <RadioGroup value={iotIntegration} onValueChange={(value) => {
             console.log('RadioGroup onValueChange:', value);
             if (value && typeof value === 'string') {
               setIotIntegration(value);
             }
-          }} className="space-y-4">
+          }} className="space-y-6">
             {iotIntegrationOptions.map((option) => {
               const IconComponent = option.icon;
               const isSelected = iotIntegration === option.value;
@@ -231,28 +233,30 @@ const CloudConnectivityStrategyPage = () => {
               return (
                 <Card
                   key={option.value}
-                  className={`cursor-pointer transition-all duration-200 ${isSelected
-                    ? 'ring-2 ring-primary bg-primary/5 border-primary'
+                  className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${isSelected
+                    ? 'ring-2 ring-primary bg-primary/5 border-primary shadow-md'
                     : 'hover:bg-accent/50 hover:border-accent'
                     }`}
                   onClick={() => setIotIntegration(option.value)}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start space-x-3">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
                       <RadioGroupItem value={option.value} id={option.value} className="mt-1" />
-                      <div className="flex items-start space-x-3 flex-1">
-                        <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      <div className="flex items-start space-x-4 flex-1">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-colors ${isSelected
+                            ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                            : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600'
                           }`}>
-                          <IconComponent className="h-4 w-4" />
+                          <IconComponent className="h-6 w-6" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={option.value}
-                            className="font-semibold text-sm cursor-pointer"
+                            className="font-semibold text-lg cursor-pointer"
                           >
                             {option.title}
                           </Label>
-                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                             {option.description}
                           </p>
                         </div>
@@ -266,10 +270,10 @@ const CloudConnectivityStrategyPage = () => {
         </div>
 
         {/* Data Processing Needs */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Data Processing Requirements</h2>
-          <p className="text-xs text-gray-600">Select the data processing capabilities you need (you can choose multiple)</p>
-          <div className="space-y-4">
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Data Processing Requirements</h2>
+          <p className="text-sm text-gray-600">Select the data processing capabilities you need (you can choose multiple)</p>
+          <div className="space-y-6">
             {dataProcessingNeeds.map((need) => {
               const IconComponent = need.icon;
               const isSelected = selectedDataProcessing.includes(need.id);
@@ -277,33 +281,35 @@ const CloudConnectivityStrategyPage = () => {
               return (
                 <Card
                   key={need.id}
-                  className={`cursor-pointer transition-all duration-200 ${isSelected
-                    ? 'ring-2 ring-primary bg-primary/5 border-primary'
+                  className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${isSelected
+                    ? 'ring-2 ring-primary bg-primary/5 border-primary shadow-md'
                     : 'hover:bg-accent/50 hover:border-accent'
                     }`}
                   onClick={() => handleDataProcessingToggle(need.id)}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start space-x-3">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
                       <Checkbox
                         id={need.id}
                         checked={isSelected}
                         onCheckedChange={() => handleDataProcessingToggle(need.id)}
                         className="mt-1"
                       />
-                      <div className="flex items-start space-x-3 flex-1">
-                        <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      <div className="flex items-start space-x-4 flex-1">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-colors ${isSelected
+                            ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                            : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600'
                           }`}>
-                          <IconComponent className="h-4 w-4" />
+                          <IconComponent className="h-6 w-6" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={need.id}
-                            className="font-semibold text-sm cursor-pointer"
+                            className="font-semibold text-lg cursor-pointer"
                           >
                             {need.label}
                           </Label>
-                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                             {need.description}
                           </p>
                         </div>
@@ -316,14 +322,26 @@ const CloudConnectivityStrategyPage = () => {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Saving...' : 'Continue to Contact Information'}
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            type="submit"
+            size="lg"
+            className="py-2"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                Continue to Contact Information
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </PageLayout>
   );

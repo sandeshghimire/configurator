@@ -90,61 +90,58 @@ const OperatingSystemChoicePage = () => {
             setSelectedOS(value);
           }
         }}>
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {operatingSystems.map((os) => {
               const IconComponent = os.icon;
               const isSelected = selectedOS === os.value;
 
-              return (<Card
-                key={os.value}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${isSelected
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log('Card clicked:', os.value);
-                  if (os.value && typeof os.value === 'string') {
-                    setSelectedOS(os.value);
-                  }
-                }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <RadioGroupItem
-                      value={os.value}
-                      id={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                          <IconComponent className={`w-4 h-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
+              return (
+                <Card
+                  key={os.value}
+                  className={`transition-all duration-200 hover:shadow-lg border-2 cursor-pointer ${isSelected
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                >
+                  <CardContent className="p-6 h-full">
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-start space-x-4 mb-4">
+                        <RadioGroupItem
+                          value={os.value}
+                          id={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                          className="mt-1 flex-shrink-0"
+                        />
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <IconComponent className="w-6 h-6 text-white" />
                         </div>
-                        <Label
-                          htmlFor={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                          className="font-semibold text-base cursor-pointer"
-                        >
-                          {os.title}
-                        </Label>
+                        <div className="flex-1 min-w-0">
+                          <Label
+                            htmlFor={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                            className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                          >
+                            {os.title}
+                          </Label>
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {os.description}
-                      </p>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {os.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         </RadioGroup>
 
-        <div className="flex justify-end pt-6">
+        <div className="flex justify-center pt-6">
           <Button
             type="submit"
+            size="lg"
             disabled={!isFormValid || isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
           >
             {isSubmitting ? (
               <>

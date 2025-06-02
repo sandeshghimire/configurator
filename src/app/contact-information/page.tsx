@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, User, Mail, Building, Phone, FileText } from "lucide-react";
+import { ArrowRight, User, Mail, Building, Phone, FileText, Loader2 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
 
@@ -173,16 +173,16 @@ const ContactInformationPage = () => {
 
           <Card className="bg-blue-50 border-blue-200">
             <CardContent className="p-4">
-              <div className="flex items-start space-x-3">
-                <div className="bg-blue-100 p-2 rounded-lg">
-                  <Mail className="h-4 w-4 text-blue-600" />
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                  <Mail className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-blue-900 mb-1 text-sm">What happens next?</h4>
-                  <p className="text-xs text-blue-700">
+                  <h4 className="font-semibold text-blue-900 mb-1 text-lg">What happens next?</h4>
+                  <p className="text-sm text-blue-700">
                     Our embedded systems engineers will review your configuration and reach out within 1-2 business days with:
                   </p>
-                  <ul className="text-xs text-blue-700 mt-2 space-y-1">
+                  <ul className="text-sm text-blue-700 mt-2 space-y-1">
                     <li>• Detailed hardware and software recommendations</li>
                     <li>• Project timeline and development approach</li>
                     <li>• Technical architecture suggestions</li>
@@ -193,14 +193,26 @@ const ContactInformationPage = () => {
             </CardContent>
           </Card>
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Submitting...' : 'Review & Submit Configuration'}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              size="lg"
+              className="py-2"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  Review & Submit Configuration
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </div>
     </PageLayout>

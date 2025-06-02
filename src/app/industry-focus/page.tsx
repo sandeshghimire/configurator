@@ -104,33 +104,37 @@ const IndustryFocusPage = () => {
             setSelectedIndustry(value);
           }
         }}>
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {industries.map((industry) => (
               <Card
                 key={industry.value}
-                className={`transition-all duration-200 hover:shadow-md border-2 ${selectedIndustry === industry.value
-                  ? 'border-blue-500 bg-blue-50'
+                className={`transition-all duration-200 hover:shadow-lg border-2 cursor-pointer ${selectedIndustry === industry.value
+                  ? 'border-blue-500 bg-blue-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <RadioGroupItem
-                      value={industry.value}
-                      id={industry.value.toLowerCase().replace(/\s+/g, '-')}
-                      className="mt-1"
-                    />
-                    <div className="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                      <industry.icon className="w-5 h-5 text-blue-600" />
+                <CardContent className="p-6 h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <RadioGroupItem
+                        value={industry.value}
+                        id={industry.value.toLowerCase().replace(/\s+/g, '-')}
+                        className="mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                        <industry.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <Label
+                          htmlFor={industry.value.toLowerCase().replace(/\s+/g, '-')}
+                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                        >
+                          {industry.title}
+                        </Label>
+                      </div>
                     </div>
                     <div className="flex-1">
-                      <Label
-                        htmlFor={industry.value.toLowerCase().replace(/\s+/g, '-')}
-                        className="font-semibold text-base cursor-pointer text-gray-900"
-                      >
-                        {industry.title}
-                      </Label>
-                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      <p className="text-sm text-gray-600 leading-relaxed">
                         {industry.description}
                       </p>
                     </div>

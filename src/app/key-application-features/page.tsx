@@ -122,10 +122,10 @@ const KeyApplicationFeaturesPage = () => {
             {error}
           </div>
         )}
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-24" />
+              <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-32" />
             ))
             : features.map((feature) => (
               <Card
@@ -133,8 +133,8 @@ const KeyApplicationFeaturesPage = () => {
                 role="button"
                 tabIndex={0}
                 aria-pressed={selectedFeatures.includes(feature.value)}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedFeatures.includes(feature.value)
-                  ? 'border-blue-500 bg-blue-50'
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFeatures.includes(feature.value)
+                  ? 'border-blue-500 bg-blue-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
                 onClick={() => handleFeatureToggle(feature.value)}
@@ -145,33 +145,37 @@ const KeyApplicationFeaturesPage = () => {
                   }
                 }}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <Checkbox
-                      id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      checked={selectedFeatures.includes(feature.value)}
-                      onCheckedChange={(checked) => {
-                        // Only handle if the checkbox itself was clicked
-                        // The card onClick will handle clicks outside the checkbox
-                        handleFeatureToggle(feature.value);
-                      }}
-                      onClick={(e) => {
-                        // Prevent the card's onClick from firing when clicking the checkbox
-                        e.stopPropagation();
-                      }}
-                      className="mt-1"
-                    />
-                    <div className="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                      <feature.icon className="w-5 h-5 text-blue-600" />
+                <CardContent className="p-6 h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <Checkbox
+                        id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                        checked={selectedFeatures.includes(feature.value)}
+                        onCheckedChange={(checked) => {
+                          // Only handle if the checkbox itself was clicked
+                          // The card onClick will handle clicks outside the checkbox
+                          handleFeatureToggle(feature.value);
+                        }}
+                        onClick={(e) => {
+                          // Prevent the card's onClick from firing when clicking the checkbox
+                          e.stopPropagation();
+                        }}
+                        className="mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                        <feature.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <Label
+                          htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                        >
+                          {feature.title}
+                        </Label>
+                      </div>
                     </div>
                     <div className="flex-1">
-                      <Label
-                        htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                        className="font-semibold text-base cursor-pointer text-gray-900"
-                      >
-                        {feature.title}
-                      </Label>
-                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      <p className="text-sm text-gray-600 leading-relaxed">
                         {feature.description}
                       </p>
                     </div>

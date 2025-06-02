@@ -86,7 +86,7 @@ const CorePlatformSelectionPage = () => {
       stepId="core-platform-selection"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {platforms.map((platform) => {
             const IconComponent = platform.icon;
             const isSelected = selectedPlatforms.includes(platform.value);
@@ -94,32 +94,34 @@ const CorePlatformSelectionPage = () => {
             return (
               <Card
                 key={platform.value}
-                className={`transition-all duration-200 hover:shadow-md border-2 ${isSelected
-                  ? 'border-blue-500 bg-blue-50'
+                className={`transition-all duration-200 hover:shadow-lg border-2 cursor-pointer ${isSelected
+                  ? 'border-blue-500 bg-blue-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <Checkbox
-                      id={platform.value.toLowerCase().replace(/\s+/g, '-')}
-                      checked={isSelected}
-                      onCheckedChange={() => handlePlatformToggle(platform.value)}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                          <IconComponent className={`w-4 h-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
-                        </div>
+                <CardContent className="p-6 h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <Checkbox
+                        id={platform.value.toLowerCase().replace(/\s+/g, '-')}
+                        checked={isSelected}
+                        onCheckedChange={() => handlePlatformToggle(platform.value)}
+                        className="mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
                         <Label
                           htmlFor={platform.value.toLowerCase().replace(/\s+/g, '-')}
-                          className="font-semibold text-base cursor-pointer"
+                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
                         >
                           {platform.title}
                         </Label>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-600 leading-relaxed">
                         {platform.description}
                       </p>
                     </div>
@@ -130,11 +132,12 @@ const CorePlatformSelectionPage = () => {
           })}
         </div>
 
-        <div className="flex justify-end pt-6">
+        <div className="flex justify-center pt-6">
           <Button
             type="submit"
+            size="lg"
             disabled={!isFormValid || isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
           >
             {isSubmitting ? (
               <>

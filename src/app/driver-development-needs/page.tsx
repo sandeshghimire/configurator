@@ -65,8 +65,8 @@ const DriverDevelopmentNeedsPage = () => {
       description="Select the type of driver development support you'll need for your embedded system. This helps us understand the complexity of low-level software development required."
       stepId="driver-development-needs"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {driverNeeds.map((need) => {
             const IconComponent = need.icon;
             const isSelected = selectedNeeds.includes(need.value);
@@ -77,9 +77,9 @@ const DriverDevelopmentNeedsPage = () => {
                 role="button"
                 tabIndex={0}
                 aria-pressed={isSelected}
-                className={`cursor-pointer transition-all duration-200 ${isSelected
-                  ? 'ring-2 ring-primary bg-primary/5 border-primary'
-                  : 'hover:bg-accent/50 hover:border-accent'
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${isSelected
+                  ? 'border-blue-500 bg-blue-50 shadow-md'
+                  : 'border-gray-200 hover:border-gray-300'
                   }`}
                 onClick={() => handleNeedToggle(need.value)}
                 onKeyDown={e => {
@@ -89,34 +89,35 @@ const DriverDevelopmentNeedsPage = () => {
                   }
                 }}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-3">
-                    <Checkbox
-                      id={need.value.toLowerCase().replace(/\s+/g, '-')}
-                      checked={isSelected}
-                      onCheckedChange={(checked) => {
-                        // Prevent event bubbling to avoid double triggering
-                        handleNeedToggle(need.value);
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-1"
-                    />
-                    <div className="flex items-start space-x-3 flex-1">
-                      <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                        }`}>
-                        <IconComponent className="h-4 w-4" />
+                <CardContent className="p-6 h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <Checkbox
+                        id={need.value.toLowerCase().replace(/\s+/g, '-')}
+                        checked={isSelected}
+                        onCheckedChange={(checked) => {
+                          // Prevent event bubbling to avoid double triggering
+                          handleNeedToggle(need.value);
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                        <IconComponent className="w-6 h-6 text-white" />
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <Label
                           htmlFor={need.value.toLowerCase().replace(/\s+/g, '-')}
-                          className="font-semibold text-sm cursor-pointer"
+                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
                         >
                           {need.title}
                         </Label>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {need.description}
-                        </p>
                       </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {need.description}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -125,14 +126,26 @@ const DriverDevelopmentNeedsPage = () => {
           })}
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Saving...' : 'Continue to Cloud Strategy'}
-          <ArrowRight className="ml-2 h-3 w-3" />
-        </Button>
+        <div className="flex justify-center pt-6">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isSubmitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                Processing...
+              </>
+            ) : (
+              <>
+                Continue to Cloud Strategy
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </PageLayout>
   );

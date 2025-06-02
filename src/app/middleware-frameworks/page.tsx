@@ -95,15 +95,15 @@ const MiddlewareFrameworksPage = () => {
       stepId="middleware-frameworks"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {frameworks.map((framework) => (
             <Card
               key={framework.value}
               role="button"
               tabIndex={0}
               aria-pressed={selectedFrameworks.includes(framework.value)}
-              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedFrameworks.includes(framework.value)
-                ? 'border-blue-500 bg-blue-50'
+              className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFrameworks.includes(framework.value)
+                ? 'border-blue-500 bg-blue-50 shadow-md'
                 : 'border-gray-200 hover:border-gray-300'
                 }`}
               onClick={() => handleCheckboxChange(framework.value, !selectedFrameworks.includes(framework.value))}
@@ -114,23 +114,29 @@ const MiddlewareFrameworksPage = () => {
                 }
               }}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <Checkbox
-                    id={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                    checked={selectedFrameworks.includes(framework.value)}
-                    onCheckedChange={(checked) => handleCheckboxChange(framework.value, checked as boolean)}
-                    className="mt-1"
-                  />
-                  <framework.icon className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+              <CardContent className="p-6 h-full">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-start space-x-4 mb-4">
+                    <Checkbox
+                      id={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                      checked={selectedFrameworks.includes(framework.value)}
+                      onCheckedChange={(checked) => handleCheckboxChange(framework.value, checked as boolean)}
+                      className="mt-1 flex-shrink-0"
+                    />
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                      <framework.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <Label
+                        htmlFor={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                        className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                      >
+                        {framework.title}
+                      </Label>
+                    </div>
+                  </div>
                   <div className="flex-1">
-                    <Label
-                      htmlFor={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      className="font-semibold text-base cursor-pointer block"
-                    >
-                      {framework.title}
-                    </Label>
-                    <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       {framework.description}
                     </p>
                   </div>
@@ -145,11 +151,11 @@ const MiddlewareFrameworksPage = () => {
             type="submit"
             size="lg"
             disabled={isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
           >
             {isSubmitting ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
                 Processing...
               </>
             ) : (

@@ -12,7 +12,8 @@ import {
   Download,
   Clock,
   AlertCircle,
-  ArrowLeft
+  ArrowLeft,
+  Loader2
 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";

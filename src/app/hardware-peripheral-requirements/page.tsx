@@ -95,15 +95,15 @@ const HardwarePeripheralRequirementsPage = () => {
       stepId="hardware-peripheral-requirements"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {peripherals.map((peripheral) => (
             <Card
               key={peripheral.value}
               role="button"
               tabIndex={0}
               aria-pressed={selectedRequirements.includes(peripheral.value)}
-              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedRequirements.includes(peripheral.value)
-                ? 'border-blue-500 bg-blue-50'
+              className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedRequirements.includes(peripheral.value)
+                ? 'border-blue-500 bg-blue-50 shadow-md'
                 : 'border-gray-200 hover:border-gray-300'
                 }`}
               onClick={() => handleCheckboxChange(peripheral.value, !selectedRequirements.includes(peripheral.value))}
@@ -114,23 +114,29 @@ const HardwarePeripheralRequirementsPage = () => {
                 }
               }}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <Checkbox
-                    id={peripheral.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                    checked={selectedRequirements.includes(peripheral.value)}
-                    onCheckedChange={(checked) => handleCheckboxChange(peripheral.value, checked as boolean)}
-                    className="mt-1"
-                  />
-                  <peripheral.icon className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+              <CardContent className="p-6 h-full">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-start space-x-4 mb-4">
+                    <Checkbox
+                      id={peripheral.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                      checked={selectedRequirements.includes(peripheral.value)}
+                      onCheckedChange={(checked) => handleCheckboxChange(peripheral.value, checked as boolean)}
+                      className="mt-1 flex-shrink-0"
+                    />
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                      <peripheral.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <Label
+                        htmlFor={peripheral.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                        className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                      >
+                        {peripheral.title}
+                      </Label>
+                    </div>
+                  </div>
                   <div className="flex-1">
-                    <Label
-                      htmlFor={peripheral.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      className="font-semibold text-base cursor-pointer block"
-                    >
-                      {peripheral.title}
-                    </Label>
-                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       {peripheral.description}
                     </p>
                   </div>
@@ -145,7 +151,7 @@ const HardwarePeripheralRequirementsPage = () => {
             type="submit"
             size="lg"
             disabled={isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
           >
             {isSubmitting ? (
               <>
