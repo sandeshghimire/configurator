@@ -161,8 +161,8 @@ const ReviewSubmitPage = () => {
         stepId="review-submit"
       >
         <div className="max-w-2xl mx-auto text-center space-y-6">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg">
+            <CheckCircle className="w-10 h-10 text-white" />
           </div>
 
           <Alert variant="success">
