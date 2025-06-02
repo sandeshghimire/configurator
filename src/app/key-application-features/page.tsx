@@ -9,13 +9,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Shield, Monitor, Globe, Smartphone, AlertTriangle, BarChart3 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
-// @ts-ignore
 import { toast } from 'sonner';
 
 const KeyApplicationFeaturesPage = () => {
   const router = useRouter();
   const { formData, updateFormData, markStepCompleted } = useConfigurator();
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(formData.keyFeatures || []);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,16 +70,34 @@ const KeyApplicationFeaturesPage = () => {
     }
   ];
 
+  // Helper to compare arrays shallowly
+  function arraysEqual(a: string[], b: string[]) {
+    if (a === b) return true;
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
   useEffect(() => {
+    if (
+      formData?.keyFeatures &&
+      Array.isArray(formData.keyFeatures) &&
+      !arraysEqual(formData.keyFeatures, selectedFeatures)
+    ) {
+      setSelectedFeatures(formData.keyFeatures);
+    }
+
     // Simulate loading for skeleton
     const timer = setTimeout(() => setLoading(false), 400);
     return () => clearTimeout(timer);
-  }, []);
+  }, [formData?.keyFeatures]); // Only depend on formData?.keyFeatures
 
   const handleFeatureToggle = (featureValue: string) => {
-    setSelectedFeatures(prev => {
+    setSelectedFeatures((prev) => {
       if (prev.includes(featureValue)) {
-        return prev.filter(f => f !== featureValue);
+        return prev.filter((f) => f !== featureValue);
       } else {
         return [...prev, featureValue];
       }
@@ -96,19 +113,42 @@ const KeyApplicationFeaturesPage = () => {
     setError(null);
     setIsSubmitting(true);
 
-    // Update form data
-    updateFormData('keyFeatures', selectedFeatures);
+    try {
+      // Update form data
+      updateFormData('keyFeatures', selectedFeatures);
 
-    // Mark step as completed
-    markStepCompleted('key-application-features');
+      // Mark step as completed
+      markStepCompleted('key-application-features');
 
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 500));
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-    setIsSubmitting(false);
-    toast.success('Key features saved!');
-    router.push('/hardware-peripheral-requirements');
+      toast.success('Key features saved!');
+      router.push('/hardware-peripheral-requirements');
+    } catch (err) {
+      console.error('Error saving features:', err);
+      setError('Failed to save features. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  // Add loading state check
+  if (loading) {
+    return (
+      <PageLayout
+        title="Select Key Application Features"
+        description="Choose the key features your embedded system will need. This helps us recommend appropriate middleware, frameworks, and hardware components."
+        stepId="key-application-features"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-32" />
+          ))}
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout
@@ -123,66 +163,44 @@ const KeyApplicationFeaturesPage = () => {
           </div>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-32" />
-            ))
-            : features.map((feature) => (
-              <Card
-                key={feature.value}
-                role="button"
-                tabIndex={0}
-                aria-pressed={selectedFeatures.includes(feature.value)}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFeatures.includes(feature.value)
+          {features.map((feature) => (
+            <Card
+              key={feature.value}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFeatures.includes(feature.value)
                   ? 'border-blue-500 bg-blue-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                onClick={() => handleFeatureToggle(feature.value)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleFeatureToggle(feature.value);
-                  }
-                }}
-              >
-                <CardContent className="p-6 h-full">
-                  <div className="flex flex-col h-full">
-                    <div className="flex items-start space-x-4 mb-4">
-                      <Checkbox
-                        id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                        checked={selectedFeatures.includes(feature.value)}
-                        onCheckedChange={(checked) => {
-                          // Only handle if the checkbox itself was clicked
-                          // The card onClick will handle clicks outside the checkbox
-                          handleFeatureToggle(feature.value);
-                        }}
-                        onClick={(e) => {
-                          // Prevent the card's onClick from firing when clicking the checkbox
-                          e.stopPropagation();
-                        }}
-                        className="mt-1 flex-shrink-0"
-                      />
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-                        <feature.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <Label
-                          htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
-                        >
-                          {feature.title}
-                        </Label>
-                      </div>
+                }`}
+            >
+              <CardContent className="p-6 h-full">
+                <div className="flex flex-col h-full">
+                  <div className="flex items-start space-x-4 mb-4">
+                    <Checkbox
+                      id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                      checked={selectedFeatures.includes(feature.value)}
+                      onCheckedChange={() => handleFeatureToggle(feature.value)}
+                      className="mt-1 flex-shrink-0"
+                    />
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                      <feature.icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {feature.description}
-                      </p>
+                    <div className="flex-1 min-w-0">
+                      <Label
+                        htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                        className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                      >
+                        {feature.title}
+                      </Label>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         <div className="flex justify-center pt-6">

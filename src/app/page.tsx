@@ -68,7 +68,7 @@ export default function Home() {
           </div>
 
           {/* Quick Benefits */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-center space-x-2 text-xs text-muted-foreground">
                 <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />

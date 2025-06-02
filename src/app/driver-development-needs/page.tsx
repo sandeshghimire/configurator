@@ -74,20 +74,10 @@ const DriverDevelopmentNeedsPage = () => {
             return (
               <Card
                 key={need.value}
-                role="button"
-                tabIndex={0}
-                aria-pressed={isSelected}
                 className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${isSelected
                   ? 'border-blue-500 bg-blue-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
-                onClick={() => handleNeedToggle(need.value)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleNeedToggle(need.value);
-                  }
-                }}
               >
                 <CardContent className="p-6 h-full">
                   <div className="flex flex-col h-full">
@@ -95,11 +85,7 @@ const DriverDevelopmentNeedsPage = () => {
                       <Checkbox
                         id={need.value.toLowerCase().replace(/\s+/g, '-')}
                         checked={isSelected}
-                        onCheckedChange={(checked) => {
-                          // Prevent event bubbling to avoid double triggering
-                          handleNeedToggle(need.value);
-                        }}
-                        onClick={(e) => e.stopPropagation()}
+                        onCheckedChange={() => handleNeedToggle(need.value)}
                         className="mt-1 flex-shrink-0"
                       />
                       <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">

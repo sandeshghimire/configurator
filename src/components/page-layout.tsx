@@ -23,7 +23,7 @@ export default function PageLayout({ children, title, description }: PageLayoutP
         <div className="h-full flex flex-col">
             <ProgressIndicator currentStep={currentStep} completedSteps={completedSteps} />
             <div className="flex-1 p-6 overflow-y-auto">
-                <div className="max-w-4xl mx-auto">
+                <div className="w-full">
                     <div className="text-center mb-6">
                         <h1 className="text-xl font-bold text-gray-900 mb-2">{title}</h1>
                         {description && (

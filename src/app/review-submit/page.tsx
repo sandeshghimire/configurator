@@ -160,7 +160,7 @@ const ReviewSubmitPage = () => {
         description="Thank you for your configuration request. Our team will review your requirements and contact you soon."
         stepId="review-submit"
       >
-        <div className="max-w-2xl mx-auto text-center space-y-6">
+        <div className="w-full text-center space-y-6">
           <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg">
             <CheckCircle className="w-10 h-10 text-white" />
           </div>
@@ -198,7 +198,7 @@ const ReviewSubmitPage = () => {
       description="Review your selections and submit your embedded system configuration request."
       stepId="review-submit"
     >
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="w-full space-y-6">
         {/* Configuration Summary */}
         <div className="grid gap-6">
           {!hasData ? (
@@ -213,7 +213,7 @@ const ReviewSubmitPage = () => {
               <Card key={sectionName} className="hover:shadow-sm transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base flex items-center gap-2">
+                    <CardTitle className="text-lg flex items-center gap-2">
                       <span>{section.icon}</span>
                       {sectionName}
                     </CardTitle>
@@ -290,11 +290,12 @@ const ReviewSubmitPage = () => {
               <Button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+                size="lg"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-2"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    <Loader2 className="mr-2 h-3 w-3 animate-spin" />
                     Submitting...
                   </>
                 ) : (
@@ -310,7 +311,7 @@ const ReviewSubmitPage = () => {
 
         {/* Additional Information */}          <Alert>
           <Clock className="h-4 w-4" />
-          <AlertDescription className="text-xs">
+          <AlertDescription className="text-sm">
             <strong>What happens next?</strong> Our engineering team will review your configuration and contact you within 1-2 business days with personalized recommendations, pricing information, and next steps for your embedded system project.
           </AlertDescription>
         </Alert>

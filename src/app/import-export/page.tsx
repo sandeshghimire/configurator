@@ -12,7 +12,8 @@ import {
     FileText,
     CheckCircle,
     AlertCircle,
-    Trash2
+    Trash2,
+    Loader2
 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
@@ -128,13 +129,15 @@ const ImportExportPage = () => {
             description="Import, export, or reset your SOC configuration data"
             stepId="import-export"
         >
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="w-full space-y-6">
 
                 {/* Current Configuration Status */}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <FileText className="w-5 h-5" />
+                        <CardTitle className="flex items-center gap-3 text-lg">
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                                <FileText className="w-6 h-6 text-white" />
+                            </div>
                             Current Configuration Status
                         </CardTitle>
                     </CardHeader>
@@ -171,8 +174,10 @@ const ImportExportPage = () => {
                     {/* Export Configuration */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Download className="w-5 h-5" />
+                            <CardTitle className="flex items-center gap-3 text-lg">
+                                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-sm">
+                                    <Download className="w-6 h-6 text-white" />
+                                </div>
                                 Export Configuration
                             </CardTitle>
                         </CardHeader>
@@ -213,8 +218,10 @@ const ImportExportPage = () => {
                     {/* Import Configuration */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Upload className="w-5 h-5" />
+                            <CardTitle className="flex items-center gap-3 text-lg">
+                                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-sm">
+                                    <Upload className="w-6 h-6 text-white" />
+                                </div>
                                 Import Configuration
                             </CardTitle>
                         </CardHeader>
@@ -257,8 +264,10 @@ const ImportExportPage = () => {
                 {/* Reset Configuration */}
                 <Card className="border-red-200">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-red-700">
-                            <Trash2 className="w-5 h-5" />
+                        <CardTitle className="flex items-center gap-3 text-lg text-red-700">
+                            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-sm">
+                                <Trash2 className="w-6 h-6 text-white" />
+                            </div>
                             Reset Configuration
                         </CardTitle>
                     </CardHeader>
@@ -305,7 +314,12 @@ const ImportExportPage = () => {
                 {/* Usage Tips */}
                 <Card className="bg-blue-50 border-blue-200">
                     <CardHeader>
-                        <CardTitle className="text-blue-900">💡 Tips for Configuration Management</CardTitle>
+                        <CardTitle className="text-lg text-blue-900 flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-sm">
+                                <span className="text-2xl">💡</span>
+                            </div>
+                            Tips for Configuration Management
+                        </CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-blue-800 space-y-2">
                         <p>• <strong>Regular Backups:</strong> Export your configuration regularly to avoid losing progress.</p>

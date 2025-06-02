@@ -61,12 +61,12 @@ const HardwarePeripheralRequirementsPage = () => {
     }
   ];
 
-  const handleCheckboxChange = (value: string, checked: boolean) => {
+  const handleCheckboxChange = (value: string) => {
     setSelectedRequirements(prev => {
-      if (checked) {
-        return [...prev, value];
-      } else {
+      if (prev.includes(value)) {
         return prev.filter(item => item !== value);
+      } else {
+        return [...prev, value];
       }
     });
   };
@@ -99,20 +99,10 @@ const HardwarePeripheralRequirementsPage = () => {
           {peripherals.map((peripheral) => (
             <Card
               key={peripheral.value}
-              role="button"
-              tabIndex={0}
-              aria-pressed={selectedRequirements.includes(peripheral.value)}
               className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedRequirements.includes(peripheral.value)
                 ? 'border-blue-500 bg-blue-50 shadow-md'
                 : 'border-gray-200 hover:border-gray-300'
                 }`}
-              onClick={() => handleCheckboxChange(peripheral.value, !selectedRequirements.includes(peripheral.value))}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCheckboxChange(peripheral.value, !selectedRequirements.includes(peripheral.value));
-                }
-              }}
             >
               <CardContent className="p-6 h-full">
                 <div className="flex flex-col h-full">
@@ -120,7 +110,7 @@ const HardwarePeripheralRequirementsPage = () => {
                     <Checkbox
                       id={peripheral.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
                       checked={selectedRequirements.includes(peripheral.value)}
-                      onCheckedChange={(checked) => handleCheckboxChange(peripheral.value, checked as boolean)}
+                      onCheckedChange={() => handleCheckboxChange(peripheral.value)}
                       className="mt-1 flex-shrink-0"
                     />
                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">

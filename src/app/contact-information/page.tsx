@@ -82,7 +82,7 @@ const ContactInformationPage = () => {
       description="Provide your contact details so our engineering team can reach out with personalized recommendations and discuss your project requirements. All information is confidential and will only be used to assist with your embedded system configuration."
       stepId="contact-information"
     >
-      <div className="max-w-2xl mx-auto">
+      <div className="w-full">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
