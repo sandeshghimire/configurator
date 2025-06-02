@@ -120,17 +120,17 @@ const IndustryFocusPage = () => {
                       id={industry.value.toLowerCase().replace(/\s+/g, '-')}
                       className="mt-1"
                     />
-                    <div className="flex-shrink-0 w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                      <industry.icon className="w-6 h-6 text-blue-600" />
+                    <div className="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                      <industry.icon className="w-5 h-5 text-blue-600" />
                     </div>
                     <div className="flex-1">
                       <Label
                         htmlFor={industry.value.toLowerCase().replace(/\s+/g, '-')}
-                        className="font-semibold text-lg cursor-pointer text-gray-900"
+                        className="font-semibold text-base cursor-pointer text-gray-900"
                       >
                         {industry.title}
                       </Label>
-                      <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                         {industry.description}
                       </p>
                     </div>
@@ -145,7 +145,7 @@ const IndustryFocusPage = () => {
           <Card className="border-orange-200 bg-orange-50">
             <CardContent className="p-6">
               <div className="space-y-3">
-                <Label htmlFor="otherIndustry" className="text-sm font-medium text-gray-900">
+                <Label htmlFor="otherIndustry" className="text-xs font-medium text-gray-900">
                   Please specify your industry:
                 </Label>
                 <Input
@@ -167,17 +167,17 @@ const IndustryFocusPage = () => {
             type="submit"
             size="lg"
             disabled={!isFormValid || isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
           >
             {isSubmitting ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
                 Processing...
               </>
             ) : (
               <>
                 Continue to Platform Selection
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}
           </Button>

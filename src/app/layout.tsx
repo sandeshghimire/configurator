@@ -8,7 +8,10 @@ import { ConfiguratorProvider } from "@/components/configurator-context";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { LoadingProvider } from "@/components/loading-system";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "SOC Product Configurator - Embedded System Configuration Tool",
@@ -22,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-screen flex flex-col overflow-hidden`}>
+      <body className={`${inter.variable} font-sans h-screen flex flex-col overflow-hidden text-sm`}>
         <ErrorBoundary>
           <LoadingProvider>
             <ConfiguratorProvider>

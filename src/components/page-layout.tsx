@@ -24,10 +24,10 @@ export default function PageLayout({ children, title, description }: PageLayoutP
             <ProgressIndicator currentStep={currentStep} completedSteps={completedSteps} />
             <div className="flex-1 p-6 overflow-y-auto">
                 <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+                    <div className="text-center mb-6">
+                        <h1 className="text-xl font-bold text-gray-900 mb-2">{title}</h1>
                         {description && (
-                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">{description}</p>
+                            <p className="text-sm text-gray-600 max-w-2xl mx-auto">{description}</p>
                         )}
                     </div>
                     {children}

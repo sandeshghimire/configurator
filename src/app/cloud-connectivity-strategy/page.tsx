@@ -156,8 +156,8 @@ const CloudConnectivityStrategyPage = () => {
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Cloud Platform Selection */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">Cloud Platform Preferences</h2>
-          <p className="text-sm text-gray-600">Select one or more cloud platforms you&apos;d like to consider (you can choose multiple)</p>
+          <h2 className="text-lg font-semibold text-gray-900">Cloud Platform Preferences</h2>
+          <p className="text-xs text-gray-600">Select one or more cloud platforms you&apos;d like to consider (you can choose multiple)</p>
           <div className="space-y-4">
             {cloudPlatforms.map((platform) => {
               const IconComponent = platform.icon;
@@ -192,16 +192,16 @@ const CloudConnectivityStrategyPage = () => {
                       <div className="flex items-start space-x-3 flex-1">
                         <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
                           }`}>
-                          <IconComponent className="h-5 w-5" />
+                          <IconComponent className="h-4 w-4" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={platform.id}
-                            className="font-semibold text-base cursor-pointer"
+                            className="font-semibold text-sm cursor-pointer"
                           >
                             {platform.label}
                           </Label>
-                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                             {platform.description}
                           </p>
                         </div>

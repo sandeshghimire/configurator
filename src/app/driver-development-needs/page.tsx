@@ -104,16 +104,16 @@ const DriverDevelopmentNeedsPage = () => {
                     <div className="flex items-start space-x-3 flex-1">
                       <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
                         }`}>
-                        <IconComponent className="h-5 w-5" />
+                        <IconComponent className="h-4 w-4" />
                       </div>
                       <div className="flex-1">
                         <Label
                           htmlFor={need.value.toLowerCase().replace(/\s+/g, '-')}
-                          className="font-semibold text-base cursor-pointer"
+                          className="font-semibold text-sm cursor-pointer"
                         >
                           {need.title}
                         </Label>
-                        <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                           {need.description}
                         </p>
                       </div>
@@ -131,7 +131,7 @@ const DriverDevelopmentNeedsPage = () => {
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Saving...' : 'Continue to Cloud Strategy'}
-          <ArrowRight className="ml-2 h-4 w-4" />
+          <ArrowRight className="ml-2 h-3 w-3" />
         </Button>
       </form>
     </PageLayout>

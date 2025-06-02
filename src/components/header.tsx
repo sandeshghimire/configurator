@@ -26,8 +26,8 @@ const Header = () => {
                 <Settings className="w-5 h-5 text-blue-900" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">SOC Configurator</h1>
-                <p className="text-blue-200 text-sm">Embedded System Configuration Tool</p>
+                <h1 className="text-lg font-bold">SOC Configurator</h1>
+                <p className="text-blue-200 text-xs">Embedded System Configuration Tool</p>
               </div>
             </Link>
           </div>
@@ -36,18 +36,18 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-blue-800"
+              className="text-white hover:bg-blue-800 text-xs"
               onClick={handleReset}
             >
-              <RotateCcw className="w-4 h-4 mr-2" />
+              <RotateCcw className="w-3 h-3 mr-1" />
               Reset
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-blue-800"
+              className="text-white hover:bg-blue-800 text-xs"
             >
-              <HelpCircle className="w-4 h-4 mr-2" />
+              <HelpCircle className="w-3 h-3 mr-1" />
               Help
             </Button>
           </div>

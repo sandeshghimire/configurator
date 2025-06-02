@@ -122,15 +122,15 @@ const MiddlewareFrameworksPage = () => {
                     onCheckedChange={(checked) => handleCheckboxChange(framework.value, checked as boolean)}
                     className="mt-1"
                   />
-                  <framework.icon className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <framework.icon className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                   <div className="flex-1">
                     <Label
                       htmlFor={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      className="font-semibold text-lg cursor-pointer block"
+                      className="font-semibold text-base cursor-pointer block"
                     >
                       {framework.title}
                     </Label>
-                    <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                    <p className="text-xs text-gray-600 mt-2 leading-relaxed">
                       {framework.description}
                     </p>
                   </div>
@@ -155,7 +155,7 @@ const MiddlewareFrameworksPage = () => {
             ) : (
               <>
                 Continue to Driver Development
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}
           </Button>

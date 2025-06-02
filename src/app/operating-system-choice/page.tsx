@@ -117,18 +117,18 @@ const OperatingSystemChoicePage = () => {
                       className="mt-1"
                     />
                     <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
+                      <div className="flex items-center space-x-3 mb-2">
                         <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                          <IconComponent className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
+                          <IconComponent className={`w-4 h-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
                         </div>
                         <Label
                           htmlFor={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                          className="font-semibold text-lg cursor-pointer"
+                          className="font-semibold text-base cursor-pointer"
                         >
                           {os.title}
                         </Label>
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         {os.description}
                       </p>
                     </div>
@@ -144,17 +144,17 @@ const OperatingSystemChoicePage = () => {
           <Button
             type="submit"
             disabled={!isFormValid || isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6"
           >
             {isSubmitting ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
                 Processing...
               </>
             ) : (
               <>
                 Continue to Key Features
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}
           </Button>

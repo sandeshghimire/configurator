@@ -94,7 +94,7 @@ const Sidebar = () => {
                   {/* Label */}
                   <div className="flex-1 min-w-0">
                     <span className={cn(
-                      "text-sm font-medium block truncate",
+                      "text-xs font-medium block truncate",
                       isActive ? "text-blue-700" : "text-gray-700"
                     )}>
                       {item.label}
@@ -114,8 +114,8 @@ const Sidebar = () => {
         {/* Progress Summary */}
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Progress</span>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs font-medium text-gray-700">Progress</span>
+            <span className="text-xs text-gray-500">
               {completedSteps.length}/{menuItems.length - 1}
             </span>
           </div>

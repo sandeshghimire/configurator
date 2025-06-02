@@ -50,18 +50,18 @@ export default function Home() {
       <div className="space-y-16">
         {/* Hero Section */}
         <div className="text-center space-y-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-50 rounded-full text-sm font-medium text-blue-600 mb-4">
-              <Sparkles className="w-4 h-4 mr-2" />
+          <div className="space-y-6">
+            <div className="inline-flex items-center px-3 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-3">
+              <Sparkles className="w-3 h-3 mr-1" />
               AI-Powered Configuration
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl xl:text-5xl">
               SOC Product
               <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Configurator
               </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-3xl mx-auto leading-6">
               Answer a few questions to help us understand your project requirements and generate
               a tailored embedded system configuration with expert recommendations.
             </p>
@@ -70,9 +70,9 @@ export default function Home() {
           {/* Quick Benefits */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center space-x-2 text-sm text-gray-600">
-                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                <span>{benefit}</span>
+              <div key={index} className="flex items-center space-x-2 text-xs text-muted-foreground">
+                <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
+                <span className="font-medium">{benefit}</span>
               </div>
             ))}
           </div>
@@ -81,25 +81,25 @@ export default function Home() {
         {/* Features Grid */}
         <div className="space-y-8">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               Why Choose Our Configurator?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-6">
               Built by embedded systems experts to simplify your development process
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-lg transition-all duration-300 group">
+              <Card key={index} className="border hover:border-muted-foreground/50 shadow-sm hover:shadow-lg transition-all duration-300 group">
                 <CardContent className="p-8">
                   <div className="space-y-4">
                     <div className={`inline-flex w-16 h-16 ${feature.color} rounded-xl items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
                       <feature.icon className="w-8 h-8" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                      <h3 className="scroll-m-20 text-lg font-semibold tracking-tight">{feature.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-6">{feature.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -111,12 +111,12 @@ export default function Home() {
         {/* Enhanced Call to Action */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl opacity-5"></div>
-          <div className="relative bg-white border border-gray-200 rounded-2xl p-12 text-center space-y-8">
+          <div className="relative bg-background border rounded-2xl p-12 text-center space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900">
+              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                 Ready to Configure Your Embedded System?
               </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-6">
                 Our intelligent configurator will guide you through selecting the optimal components
                 for your embedded system project, from hardware platforms to software frameworks.
               </p>
@@ -124,24 +124,24 @@ export default function Home() {
 
             <div className="space-y-6">
               <Link href="/industry-focus" passHref>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                   Start Configuration
-                  <ArrowRight className="ml-3 w-6 h-6" />
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
 
-              <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+              <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Auto-save progress</span>
+                  <span className="font-medium">Auto-save progress</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span>Free to use</span>
+                  <span className="font-medium">Free to use</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span>Expert validated</span>
+                  <span className="font-medium">Expert validated</span>
                 </div>
               </div>
             </div>
@@ -149,14 +149,14 @@ export default function Home() {
         </div>
 
         {/* Trust Indicators */}
-        <div className="text-center space-y-4 py-8 border-t border-gray-100">
-          <p className="text-sm font-medium text-gray-900">Trusted by embedded systems engineers worldwide</p>
-          <div className="flex items-center justify-center space-x-8 text-xs text-gray-400">
-            <span>🏭 Industrial IoT</span>
-            <span>🚗 Automotive</span>
-            <span>🏥 Medical Devices</span>
-            <span>✈️ Aerospace</span>
-            <span>🏠 Consumer Electronics</span>
+        <div className="text-center space-y-3 py-6 border-t">
+          <p className="text-xs font-medium">Trusted by embedded systems engineers worldwide</p>
+          <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
+            <span className="font-medium">🏭 Industrial IoT</span>
+            <span className="font-medium">🚗 Automotive</span>
+            <span className="font-medium">🏥 Medical Devices</span>
+            <span className="font-medium">✈️ Aerospace</span>
+            <span className="font-medium">🏠 Consumer Electronics</span>
           </div>
         </div>
       </div>

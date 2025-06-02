@@ -41,6 +41,20 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Custom typography scale - smaller sizes */
+  --font-size-xs: 0.65rem;
+  --line-height-xs: 1rem;
+  --font-size-sm: 0.8rem;
+  --line-height-sm: 1.125rem;
+  --font-size-base: 0.875rem;
+  --line-height-base: 1.25rem;
+  --font-size-lg: 1rem;
+  --line-height-lg: 1.375rem;
+  --font-size-xl: 1.125rem;
+  --line-height-xl: 1.5rem;
+  --font-size-2xl: 1.25rem;
+  --line-height-2xl: 1.625rem;
 }
 
 :root {
@@ -118,7 +132,48 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans text-sm;
+  }
+
+  /* Typography utilities */
+  .text-xs {
+    font-size: 0.65rem;
+    line-height: 1rem;
+  }
+
+  .text-sm {
+    font-size: 0.8rem;
+    line-height: 1.125rem;
+  }
+
+  .text-base {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+    line-height: 1.375rem;
+  }
+
+  .text-xl {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+    line-height: 1.625rem;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .text-4xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 
   /* Ensure proper height constraints for the configurator */
