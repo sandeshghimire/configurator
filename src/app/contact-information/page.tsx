@@ -99,7 +99,7 @@ const ContactInformationPage = () => {
                 className={errors.fullName ? 'border-red-500' : ''}
               />
               {errors.fullName && (
-                <p className="text-sm text-red-500">{errors.fullName}</p>
+                <p className="text-xs text-red-500">{errors.fullName}</p>
               )}
             </div>
 
@@ -117,7 +117,7 @@ const ContactInformationPage = () => {
                 className={errors.email ? 'border-red-500' : ''}
               />
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email}</p>
+                <p className="text-xs text-red-500">{errors.email}</p>
               )}
             </div>
 

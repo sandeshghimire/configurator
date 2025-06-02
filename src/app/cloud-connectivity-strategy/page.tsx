@@ -216,8 +216,8 @@ const CloudConnectivityStrategyPage = () => {
 
         {/* IoT Platform Integration */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">IoT Platform Integration</h2>
-          <p className="text-sm text-gray-600">Choose your preferred approach for IoT device management and integration</p>
+          <h2 className="text-lg font-semibold text-gray-900">IoT Platform Integration</h2>
+          <p className="text-xs text-gray-600">Choose your preferred approach for IoT device management and integration</p>
           <RadioGroup value={iotIntegration} onValueChange={(value) => {
             console.log('RadioGroup onValueChange:', value);
             if (value && typeof value === 'string') {
@@ -243,16 +243,16 @@ const CloudConnectivityStrategyPage = () => {
                       <div className="flex items-start space-x-3 flex-1">
                         <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
                           }`}>
-                          <IconComponent className="h-5 w-5" />
+                          <IconComponent className="h-4 w-4" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={option.value}
-                            className="font-semibold text-base cursor-pointer"
+                            className="font-semibold text-sm cursor-pointer"
                           >
                             {option.title}
                           </Label>
-                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                             {option.description}
                           </p>
                         </div>
@@ -267,8 +267,8 @@ const CloudConnectivityStrategyPage = () => {
 
         {/* Data Processing Needs */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">Data Processing Requirements</h2>
-          <p className="text-sm text-gray-600">Select the data processing capabilities you need (you can choose multiple)</p>
+          <h2 className="text-lg font-semibold text-gray-900">Data Processing Requirements</h2>
+          <p className="text-xs text-gray-600">Select the data processing capabilities you need (you can choose multiple)</p>
           <div className="space-y-4">
             {dataProcessingNeeds.map((need) => {
               const IconComponent = need.icon;
@@ -294,16 +294,16 @@ const CloudConnectivityStrategyPage = () => {
                       <div className="flex items-start space-x-3 flex-1">
                         <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
                           }`}>
-                          <IconComponent className="h-5 w-5" />
+                          <IconComponent className="h-4 w-4" />
                         </div>
                         <div className="flex-1">
                           <Label
                             htmlFor={need.id}
-                            className="font-semibold text-base cursor-pointer"
+                            className="font-semibold text-sm cursor-pointer"
                           >
                             {need.label}
                           </Label>
-                          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                             {need.description}
                           </p>
                         </div>
