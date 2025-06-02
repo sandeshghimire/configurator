@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -15,6 +15,13 @@ const OperatingSystemChoicePage = () => {
   const { formData, updateFormData, markStepCompleted } = useConfigurator();
   const [selectedOS, setSelectedOS] = useState(formData.operatingSystem || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync with form data when it changes
+  useEffect(() => {
+    if (formData.operatingSystem && formData.operatingSystem !== selectedOS) {
+      setSelectedOS(formData.operatingSystem);
+    }
+  }, [formData.operatingSystem, selectedOS]);
 
   const operatingSystems = [
     {
@@ -77,47 +84,57 @@ const OperatingSystemChoicePage = () => {
       stepId="operating-system-choice"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <RadioGroup value={selectedOS} onValueChange={setSelectedOS}>
+        <RadioGroup value={selectedOS} onValueChange={(value) => {
+          console.log('RadioGroup onValueChange:', value);
+          if (value && typeof value === 'string') {
+            setSelectedOS(value);
+          }
+        }}>
           <div className="grid gap-4">
             {operatingSystems.map((os) => {
               const IconComponent = os.icon;
               const isSelected = selectedOS === os.value;
 
-              return (
-                <Card
-                  key={os.value}
-                  className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${isSelected
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  onClick={() => setSelectedOS(os.value)}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <RadioGroupItem
-                        value={os.value}
-                        id={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                        className="mt-1"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-3">
-                          <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                            <IconComponent className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
-                          </div>
-                          <Label
-                            htmlFor={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                            className="font-semibold text-lg cursor-pointer"
-                          >
-                            {os.title}
-                          </Label>
+              return (<Card
+                key={os.value}
+                className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${isSelected
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log('Card clicked:', os.value);
+                  if (os.value && typeof os.value === 'string') {
+                    setSelectedOS(os.value);
+                  }
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <RadioGroupItem
+                      value={os.value}
+                      id={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                      className="mt-1"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                          <IconComponent className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
                         </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {os.description}
-                        </p>
+                        <Label
+                          htmlFor={os.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                          className="font-semibold text-lg cursor-pointer"
+                        >
+                          {os.title}
+                        </Label>
                       </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {os.description}
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </CardContent>
+              </Card>
               );
             })}
           </div>

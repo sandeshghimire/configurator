@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Code, Cpu, Settings, HardDrive, Zap, Wrench } from "lucide-react";
+import { ArrowRight, Code, Settings, Wrench } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
 
@@ -37,10 +37,6 @@ const DriverDevelopmentNeedsPage = () => {
     }
   ];
 
-  useEffect(() => {
-    updateFormData({ driverNeeds: selectedNeeds });
-  }, [selectedNeeds, updateFormData]);
-
   const handleNeedToggle = (needValue: string) => {
     setSelectedNeeds(prev => {
       if (prev.includes(needValue)) {
@@ -56,7 +52,7 @@ const DriverDevelopmentNeedsPage = () => {
     setIsSubmitting(true);
 
     // Save current data
-    updateFormData({ driverNeeds: selectedNeeds });
+    updateFormData('driverNeeds', selectedNeeds);
     markStepCompleted('driver-development-needs');
 
     // Navigate to next step
@@ -74,15 +70,14 @@ const DriverDevelopmentNeedsPage = () => {
           {driverNeeds.map((need) => {
             const IconComponent = need.icon;
             const isSelected = selectedNeeds.includes(need.value);
-            
+
             return (
-              <Card 
-                key={need.value} 
-                className={`cursor-pointer transition-all duration-200 ${
-                  isSelected 
-                    ? 'ring-2 ring-primary bg-primary/5 border-primary' 
-                    : 'hover:bg-accent/50 hover:border-accent'
-                }`}
+              <Card
+                key={need.value}
+                className={`cursor-pointer transition-all duration-200 ${isSelected
+                  ? 'ring-2 ring-primary bg-primary/5 border-primary'
+                  : 'hover:bg-accent/50 hover:border-accent'
+                  }`}
                 onClick={() => handleNeedToggle(need.value)}
               >
                 <CardContent className="p-4">
@@ -90,13 +85,12 @@ const DriverDevelopmentNeedsPage = () => {
                     <Checkbox
                       id={need.value.toLowerCase().replace(/\s+/g, '-')}
                       checked={isSelected}
-                      onChange={() => {}} // Handled by card click
+                      onCheckedChange={() => handleNeedToggle(need.value)}
                       className="mt-1"
                     />
                     <div className="flex items-start space-x-3 flex-1">
-                      <div className={`p-2 rounded-lg transition-colors ${
-                        isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                      }`}>
+                      <div className={`p-2 rounded-lg transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                        }`}>
                         <IconComponent className="h-5 w-5" />
                       </div>
                       <div className="flex-1">
@@ -118,9 +112,9 @@ const DriverDevelopmentNeedsPage = () => {
           })}
         </div>
 
-        <Button 
-          type="submit" 
-          className="w-full" 
+        <Button
+          type="submit"
+          className="w-full"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Saving...' : 'Continue to Cloud Strategy'}

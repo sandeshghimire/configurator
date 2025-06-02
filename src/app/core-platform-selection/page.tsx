@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -95,8 +95,8 @@ const CorePlatformSelectionPage = () => {
               <Card
                 key={platform.value}
                 className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${isSelected
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
                   }`}
                 onClick={() => handlePlatformToggle(platform.value)}
               >
@@ -105,7 +105,7 @@ const CorePlatformSelectionPage = () => {
                     <Checkbox
                       id={platform.value.toLowerCase().replace(/\s+/g, '-')}
                       checked={isSelected}
-                      onChange={() => { }} // Handled by card onClick
+                      onCheckedChange={() => handlePlatformToggle(platform.value)}
                       className="mt-1"
                     />
                     <div className="flex-1">

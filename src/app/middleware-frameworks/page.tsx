@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -74,22 +74,22 @@ const MiddlewareFrameworksPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Update form data
     updateFormData('middlewareFrameworks', selectedFrameworks);
-    
+
     // Mark step as completed
     markStepCompleted('middleware-frameworks');
-    
+
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     setIsSubmitting(false);
     router.push('/driver-development-needs');
   };
 
   return (
-    <PageLayout 
+    <PageLayout
       title="Middleware & Frameworks"
       description="Select the middleware components and frameworks your embedded system will use for communication and data processing."
       stepId="middleware-frameworks"
@@ -97,13 +97,12 @@ const MiddlewareFrameworksPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-4">
           {frameworks.map((framework) => (
-            <Card 
-              key={framework.value} 
-              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
-                selectedFrameworks.includes(framework.value) 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+            <Card
+              key={framework.value}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedFrameworks.includes(framework.value)
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-200 hover:border-gray-300'
+                }`}
               onClick={() => handleCheckboxChange(framework.value, !selectedFrameworks.includes(framework.value))}
             >
               <CardContent className="p-6">
@@ -131,10 +130,10 @@ const MiddlewareFrameworksPage = () => {
             </Card>
           ))}
         </div>
-        
+
         <div className="flex justify-center pt-6">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             size="lg"
             disabled={isSubmitting}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -74,22 +74,22 @@ const HardwarePeripheralRequirementsPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Update form data
     updateFormData('hardwareRequirements', selectedRequirements);
-    
+
     // Mark step as completed
     markStepCompleted('hardware-peripheral-requirements');
-    
+
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     setIsSubmitting(false);
     router.push('/middleware-frameworks');
   };
 
   return (
-    <PageLayout 
+    <PageLayout
       title="Hardware & Peripheral Requirements"
       description="Select the hardware components and peripheral interfaces your embedded system will need."
       stepId="hardware-peripheral-requirements"
@@ -97,13 +97,12 @@ const HardwarePeripheralRequirementsPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-4">
           {peripherals.map((peripheral) => (
-            <Card 
-              key={peripheral.value} 
-              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
-                selectedRequirements.includes(peripheral.value) 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+            <Card
+              key={peripheral.value}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedRequirements.includes(peripheral.value)
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-200 hover:border-gray-300'
+                }`}
               onClick={() => handleCheckboxChange(peripheral.value, !selectedRequirements.includes(peripheral.value))}
             >
               <CardContent className="p-6">
@@ -131,10 +130,10 @@ const HardwarePeripheralRequirementsPage = () => {
             </Card>
           ))}
         </div>
-        
+
         <div className="flex justify-center pt-6">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             size="lg"
             disabled={isSubmitting}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8"

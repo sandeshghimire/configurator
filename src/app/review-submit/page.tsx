@@ -18,7 +18,7 @@ import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
 
 const ReviewSubmitPage = () => {
-  const { formData, completedSteps, markStepCompleted } = useConfigurator();
+  const { formData, markStepCompleted } = useConfigurator();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -101,7 +101,7 @@ const ReviewSubmitPage = () => {
   };
 
   const hasData = Object.values(sectionMappings).some(section => section.data);
-  const completedSections = Object.entries(sectionMappings).filter(([_, section]) => section.data);
+  const completedSections = Object.entries(sectionMappings).filter(([, section]) => section.data);
 
   if (isSubmitted) {
     return (
@@ -124,7 +124,7 @@ const ReviewSubmitPage = () => {
 
           <div className="space-y-4">
             <p className="text-gray-600">
-              We've sent a confirmation email to your registered address with a copy of your configuration.
+              We&apos;ve sent a confirmation email to your registered address with a copy of your configuration.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -18,6 +18,16 @@ const IndustryFocusPage = () => {
   const [otherIndustry, setOtherIndustry] = useState(formData.otherIndustry || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Sync with form data when it changes
+  useEffect(() => {
+    if (formData.industryFocus && formData.industryFocus !== selectedIndustry) {
+      setSelectedIndustry(formData.industryFocus);
+    }
+    if (formData.otherIndustry && formData.otherIndustry !== otherIndustry) {
+      setOtherIndustry(formData.otherIndustry);
+    }
+  }, [formData.industryFocus, formData.otherIndustry, selectedIndustry, otherIndustry]);
+
   const industries = [
     {
       value: 'Automotive',
@@ -88,14 +98,19 @@ const IndustryFocusPage = () => {
       stepId="industry-focus"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <RadioGroup value={selectedIndustry} onValueChange={setSelectedIndustry}>
+        <RadioGroup value={selectedIndustry} onValueChange={(value) => {
+          console.log('RadioGroup onValueChange:', value);
+          if (value && typeof value === 'string') {
+            setSelectedIndustry(value);
+          }
+        }}>
           <div className="grid gap-4">
             {industries.map((industry) => (
               <Card
                 key={industry.value}
                 className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedIndustry === industry.value
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
                   }`}
                 onClick={() => setSelectedIndustry(industry.value)}
               >
@@ -171,68 +186,6 @@ const IndustryFocusPage = () => {
       </form>
     </PageLayout>
   );
-};
-
-export default IndustryFocusPage;
-{
-  value: 'Other',
-    title: 'Other Industries',
-      description: 'Consumer electronics, smart home, retail, agriculture, energy, or custom applications. We\'ll work with you to understand your specific requirements and recommend the best configuration.'
-}
-  ];
-
-return (
-  <div className="h-full flex flex-col">
-    <div className="flex-1 p-4 overflow-y-auto">
-      <div className="w-full max-w-4xl mx-auto space-y-6">
-        <h1 className="text-xl font-bold text-center">Select Your Industry</h1>
-
-        <form className="space-y-4">
-          <RadioGroup defaultValue="Automotive" className="space-y-4">
-            {industries.map((industry) => (
-              <Card key={industry.value} className="cursor-pointer hover:bg-accent/50 transition-colors">
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-3">
-                    <RadioGroupItem
-                      value={industry.value}
-                      id={industry.value.toLowerCase().replace(/\s+/g, '-')}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <Label
-                        htmlFor={industry.value.toLowerCase().replace(/\s+/g, '-')}
-                        className="font-semibold text-base cursor-pointer"
-                      >
-                        {industry.title}
-                      </Label>
-                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                        {industry.description}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </RadioGroup>
-          <div className="space-y-2">
-            <Label htmlFor="otherIndustry">If Other, please specify:</Label>
-            <Input
-              type="text"
-              id="otherIndustry"
-              name="otherIndustry"
-              placeholder="Enter your industry"
-            />
-          </div>
-          <Link href="/core-platform-selection" passHref>
-            <Button type="submit" className="w-full">
-              Next
-            </Button>
-          </Link>
-        </form>
-      </div>
-    </div>
-  </div>
-);
 };
 
 export default IndustryFocusPage;
