@@ -196,7 +196,7 @@ export default function AdminDashboard() {
     return (
         <div className="p-6 space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+                <h1 className="text-xl font-bold">Admin Dashboard</h1>
                 <div className="flex space-x-2">
                     <Button onClick={fetchConfigurations} variant="outline">
                         <RefreshCw className="w-4 h-4 mr-2" />
@@ -213,38 +213,38 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
+                        <CardTitle className="text-xs font-medium">Total Submissions</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{configurations.length}</div>
+                        <div className="text-lg font-bold">{configurations.length}</div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
+                        <CardTitle className="text-xs font-medium">Pending Review</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">
+                        <div className="text-lg font-bold">
                             {configurations.filter(c => c.status === 'submitted').length}
                         </div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">Completed</CardTitle>
+                        <CardTitle className="text-xs font-medium">Completed</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">
+                        <div className="text-lg font-bold">
                             {configurations.filter(c => c.status === 'completed').length}
                         </div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">This Week</CardTitle>
+                        <CardTitle className="text-xs font-medium">This Week</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">
+                        <div className="text-lg font-bold">
                             {configurations.filter(c =>
                                 new Date(c.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
                             ).length}
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
                 {analytics.map((analytic, index) => (
                     <Card key={index}>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium flex items-center">
+                            <CardTitle className="text-xs font-medium flex items-center">
                                 <BarChart3 className="w-4 h-4 mr-2" />
                                 Popular {analytic.category.charAt(0).toUpperCase() + analytic.category.slice(1)} Choices
                             </CardTitle>
@@ -267,7 +267,7 @@ export default function AdminDashboard() {
                             <div className="space-y-2">
                                 {analytic.popularChoices.slice(0, 5).map((choice, idx) => (
                                     <div key={idx} className="flex justify-between items-center">
-                                        <span className="text-sm truncate">{choice.option}</span>
+                                        <span className="text-xs truncate">{choice.option}</span>
                                         <Badge variant="secondary">{choice.count}</Badge>
                                     </div>
                                 ))}
@@ -280,7 +280,7 @@ export default function AdminDashboard() {
             {/* Configurations List */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Recent Submissions</CardTitle>
+                    <CardTitle className="text-base">Recent Submissions</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
@@ -296,14 +296,14 @@ export default function AdminDashboard() {
                                 <div key={config.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                                     <div className="flex-1">
                                         <div className="flex items-center space-x-2">
-                                            <h3 className="font-medium">
+                                            <h3 className="font-medium text-sm">
                                                 {contactInfo.companyName || contactInfo.fullName || 'Unknown'}
                                             </h3>
                                             <Badge className={getStatusColor(config.status)}>
                                                 {config.status}
                                             </Badge>
                                         </div>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-xs text-gray-600">
                                             Industry: {config.industryFocus || 'Not specified'}
                                         </p>
                                         <p className="text-xs text-gray-500">
@@ -331,12 +331,12 @@ export default function AdminDashboard() {
                     <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
                         <CardHeader>
                             <div className="flex justify-between items-center">
-                                <CardTitle>Configuration Details</CardTitle>
+                                <CardTitle className="text-base">Configuration Details</CardTitle>
                                 <Button variant="ghost" onClick={() => setSelectedConfig(null)}>×</Button>
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <pre className="text-sm bg-gray-100 p-4 rounded overflow-x-auto">
+                            <pre className="text-xs bg-gray-100 p-4 rounded overflow-x-auto">
                                 {JSON.stringify(selectedConfig, null, 2)}
                             </pre>
                         </CardContent>

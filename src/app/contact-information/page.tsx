@@ -135,7 +135,7 @@ const ContactInformationPage = () => {
                 className={errors.companyName ? 'border-red-500' : ''}
               />
               {errors.companyName && (
-                <p className="text-sm text-red-500">{errors.companyName}</p>
+                <p className="text-xs text-red-500">{errors.companyName}</p>
               )}
             </div>
 
@@ -175,14 +175,14 @@ const ContactInformationPage = () => {
             <CardContent className="p-4">
               <div className="flex items-start space-x-3">
                 <div className="bg-blue-100 p-2 rounded-lg">
-                  <Mail className="h-5 w-5 text-blue-600" />
+                  <Mail className="h-4 w-4 text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-blue-900 mb-1">What happens next?</h4>
-                  <p className="text-sm text-blue-700">
+                  <h4 className="font-semibold text-blue-900 mb-1 text-sm">What happens next?</h4>
+                  <p className="text-xs text-blue-700">
                     Our embedded systems engineers will review your configuration and reach out within 1-2 business days with:
                   </p>
-                  <ul className="text-sm text-blue-700 mt-2 space-y-1">
+                  <ul className="text-xs text-blue-700 mt-2 space-y-1">
                     <li>• Detailed hardware and software recommendations</li>
                     <li>• Project timeline and development approach</li>
                     <li>• Technical architecture suggestions</li>

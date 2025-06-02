@@ -169,10 +169,8 @@ const ReviewSubmitPage = () => {
             <AlertDescription>
               Your configuration has been successfully submitted! Our engineering team will review your requirements and contact you within 1-2 business days with personalized recommendations.
             </AlertDescription>
-          </Alert>
-
-          <div className="space-y-4">
-            <p className="text-gray-600">
+          </Alert>            <div className="space-y-4">
+            <p className="text-gray-600 text-sm">
               We&apos;ve sent a confirmation email to your registered address with a copy of your configuration.
             </p>
 
@@ -214,7 +212,7 @@ const ReviewSubmitPage = () => {
               <Card key={sectionName} className="hover:shadow-sm transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="text-base flex items-center gap-2">
                       <span>{section.icon}</span>
                       {sectionName}
                     </CardTitle>
@@ -245,20 +243,20 @@ const ReviewSubmitPage = () => {
                           <div className="space-y-1">
                             {Object.entries(section.data).map(([key, value]) => (
                               <div key={key} className="flex">
-                                <span className="font-medium text-gray-600 w-32">{key}:</span>
-                                <span className="text-gray-900">{String(value)}</span>
+                                <span className="font-medium text-gray-600 w-32 text-xs">{key}:</span>
+                                <span className="text-gray-900 text-xs">{String(value)}</span>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-900">{String(section.data)}</span>
+                          <span className="text-gray-900 text-xs">{String(section.data)}</span>
                         )}
                       </div>
                     )}
                     {section.otherData && (
                       <div className="mt-2">
-                        <span className="font-medium text-gray-600">Additional Details: </span>
-                        <span className="text-gray-900">{section.otherData}</span>
+                        <span className="font-medium text-gray-600 text-xs">Additional Details: </span>
+                        <span className="text-gray-900 text-xs">{section.otherData}</span>
                       </div>
                     )}
                   </div>
@@ -309,10 +307,9 @@ const ReviewSubmitPage = () => {
           </div>
         )}
 
-        {/* Additional Information */}
-        <Alert>
+        {/* Additional Information */}          <Alert>
           <Clock className="h-4 w-4" />
-          <AlertDescription>
+          <AlertDescription className="text-xs">
             <strong>What happens next?</strong> Our engineering team will review your configuration and contact you within 1-2 business days with personalized recommendations, pricing information, and next steps for your embedded system project.
           </AlertDescription>
         </Alert>
