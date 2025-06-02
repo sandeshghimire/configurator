@@ -4,13 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ContactInformationPage = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-lg space-y-6">
           <h1 className="text-xl font-bold text-center">Contact Information</h1>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Provide your contact details so our engineering team can reach out with personalized recommendations and discuss your project requirements.
+                All information is confidential and will only be used to assist with your embedded system configuration.
+              </p>
+            </CardContent>
+          </Card>
+
           <form className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
