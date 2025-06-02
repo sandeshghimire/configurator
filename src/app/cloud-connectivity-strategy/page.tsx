@@ -1,42 +1,59 @@
-import React from 'react';
-import Link from 'next/link';
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Cloud, Server, Database, Cpu, Shield, HelpCircle, Brain, Zap, BarChart3 } from "lucide-react";
+import PageLayout from "@/components/page-layout";
+import { useConfigurator } from "@/components/configurator-context";
 
 const CloudConnectivityStrategyPage = () => {
+  const router = useRouter();
+  const { formData, updateFormData, markStepCompleted } = useConfigurator();
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(formData.cloudPlatforms || []);
+  const [iotIntegration, setIotIntegration] = useState<string>(formData.iotIntegration || 'undecided-iot');
+  const [selectedDataProcessing, setSelectedDataProcessing] = useState<string[]>(formData.dataProcessing || []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const cloudPlatforms = [
     {
       id: "aws",
       label: "AWS",
-      description: "Amazon Web Services - comprehensive cloud platform with IoT Core, extensive edge services, and global infrastructure. Strong enterprise features, machine learning services, and robust security. Best for: scalable enterprise solutions, complex data processing, global deployments."
+      description: "Amazon Web Services - comprehensive cloud platform with IoT Core, extensive edge services, and global infrastructure. Strong enterprise features, machine learning services, and robust security. Best for: scalable enterprise solutions, complex data processing, global deployments.",
+      icon: Cloud
     },
     {
       id: "azure",
       label: "Azure",
-      description: "Microsoft Azure - enterprise-focused cloud with IoT Central, strong hybrid capabilities, and seamless Office 365 integration. Excellent for organizations using Microsoft ecosystem. Best for: enterprise environments, hybrid cloud, Microsoft technology stacks."
+      description: "Microsoft Azure - enterprise-focused cloud with IoT Central, strong hybrid capabilities, and seamless Office 365 integration. Excellent for organizations using Microsoft ecosystem. Best for: enterprise environments, hybrid cloud, Microsoft technology stacks.",
+      icon: Server
     },
     {
       id: "gcp",
       label: "Google Cloud Platform",
-      description: "Google Cloud Platform - analytics and AI-focused cloud with IoT Core and powerful data processing capabilities. Strong in machine learning and real-time analytics. Best for: data analytics, AI/ML workloads, real-time processing."
+      description: "Google Cloud Platform - analytics and AI-focused cloud with IoT Core and powerful data processing capabilities. Strong in machine learning and real-time analytics. Best for: data analytics, AI/ML workloads, real-time processing.",
+      icon: Database
     },
     {
       id: "private-cloud",
       label: "Private Cloud",
-      description: "Dedicated cloud infrastructure for enhanced security and control. Provides cloud benefits while maintaining data sovereignty and compliance requirements. Best for: sensitive data, regulatory compliance, customized environments."
+      description: "Dedicated cloud infrastructure for enhanced security and control. Provides cloud benefits while maintaining data sovereignty and compliance requirements. Best for: sensitive data, regulatory compliance, customized environments.",
+      icon: Shield
     },
     {
       id: "on-premise-only",
       label: "On-Premise Only",
-      description: "Local infrastructure without cloud connectivity. Maximum data control and security but limited scalability and remote access. Best for: air-gapped environments, sensitive applications, minimal connectivity requirements."
+      description: "Local infrastructure without cloud connectivity. Maximum data control and security but limited scalability and remote access. Best for: air-gapped environments, sensitive applications, minimal connectivity requirements.",
+      icon: Server
     },
     {
       id: "undecided-cloud",
       label: "Undecided",
-      description: "Need help choosing the right cloud strategy? Our team will evaluate your requirements including data sensitivity, compliance needs, scalability requirements, and budget to recommend the optimal approach."
+      description: "Need help choosing the right cloud strategy? Our team will evaluate your requirements including data sensitivity, compliance needs, scalability requirements, and budget to recommend the optimal approach.",
+      icon: HelpCircle
     }
   ];
 
