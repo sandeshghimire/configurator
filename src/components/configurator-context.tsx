@@ -33,6 +33,10 @@ interface ConfiguratorContextType {
     completedSteps: string[];
     markStepCompleted: (stepId: string) => void;
     resetForm: () => void;
+    getCompletionPercentage: () => number;
+    validateCurrentStep: (stepId: string) => boolean;
+    exportConfiguration: () => string;
+    importConfiguration: (jsonData: string) => boolean;
 }
 
 const ConfiguratorContext = createContext<ConfiguratorContextType | undefined>(undefined);
@@ -73,10 +77,19 @@ export function ConfiguratorProvider({ children }: { children: React.ReactNode }
     }, [completedSteps]);
 
     const updateFormData = useCallback(<T extends keyof FormData>(section: T, data: FormData[T]) => {
-        setFormData(prev => ({
-            ...prev,
-            [section]: data
-        }));
+        setFormData(prev => {
+            const newFormData = {
+                ...prev,
+                [section]: data
+            };
+
+            // Auto-save to localStorage with debounce
+            setTimeout(() => {
+                localStorage.setItem('configurator-form-data', JSON.stringify(newFormData));
+            }, 500);
+
+            return newFormData;
+        });
     }, []);
 
     const markStepCompleted = useCallback((stepId: string) => {
@@ -95,6 +108,42 @@ export function ConfiguratorProvider({ children }: { children: React.ReactNode }
         localStorage.removeItem('configurator-completed-steps');
     };
 
+    const getCompletionPercentage = useCallback(() => {
+        const totalSteps = 10; // Total number of configuration steps
+        return Math.round((completedSteps.length / totalSteps) * 100);
+    }, [completedSteps]);
+
+    const validateCurrentStep = useCallback((stepId: string) => {
+        const { validateStep } = require('@/lib/validation');
+        const result = validateStep(stepId, formData);
+        return result.success;
+    }, [formData]);
+
+    const exportConfiguration = useCallback(() => {
+        const exportData = {
+            formData,
+            completedSteps,
+            exportedAt: new Date().toISOString(),
+            version: '1.0'
+        };
+        return JSON.stringify(exportData, null, 2);
+    }, [formData, completedSteps]);
+
+    const importConfiguration = useCallback((jsonData: string) => {
+        try {
+            const importedData = JSON.parse(jsonData);
+            if (importedData.formData && importedData.completedSteps) {
+                setFormData(importedData.formData);
+                setCompletedSteps(importedData.completedSteps);
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Failed to import configuration:', error);
+            return false;
+        }
+    }, []);
+
     return (
         <ConfiguratorContext.Provider
             value={{
@@ -102,7 +151,11 @@ export function ConfiguratorProvider({ children }: { children: React.ReactNode }
                 updateFormData,
                 completedSteps,
                 markStepCompleted,
-                resetForm
+                resetForm,
+                getCompletionPercentage,
+                validateCurrentStep,
+                exportConfiguration,
+                importConfiguration
             }}
         >
             {children}

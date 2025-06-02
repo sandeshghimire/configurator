@@ -94,11 +94,10 @@ const CorePlatformSelectionPage = () => {
             return (
               <Card
                 key={platform.value}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${isSelected
+                className={`transition-all duration-200 hover:shadow-md border-2 ${isSelected
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
-                onClick={() => handlePlatformToggle(platform.value)}
               >
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">

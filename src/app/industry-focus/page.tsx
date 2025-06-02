@@ -108,11 +108,20 @@ const IndustryFocusPage = () => {
             {industries.map((industry) => (
               <Card
                 key={industry.value}
+                role="button"
+                tabIndex={0}
+                aria-pressed={selectedIndustry === industry.value}
                 className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedIndustry === industry.value
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-200 hover:border-gray-300'
                   }`}
                 onClick={() => setSelectedIndustry(industry.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedIndustry(industry.value);
+                  }
+                }}
               >
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">

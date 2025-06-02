@@ -5,6 +5,8 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Sidebar from "@/components/sidebar";
 import { ConfiguratorProvider } from "@/components/configurator-context";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { LoadingProvider } from "@/components/loading-system";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,14 +23,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} h-screen flex flex-col overflow-hidden`}>
-        <ConfiguratorProvider>
-          <Header />
-          <div className="flex flex-1 overflow-hidden">
-            <Sidebar />
-            <main className="flex-1 overflow-auto bg-gray-50">{children}</main>
-          </div>
-          <Footer />
-        </ConfiguratorProvider>
+        <ErrorBoundary>
+          <LoadingProvider>
+            <ConfiguratorProvider>
+              <Header />
+              <div className="flex flex-1 overflow-hidden">
+                <Sidebar />
+                <main className="flex-1 overflow-auto bg-gray-50">{children}</main>
+              </div>
+              <Footer />
+            </ConfiguratorProvider>
+          </LoadingProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

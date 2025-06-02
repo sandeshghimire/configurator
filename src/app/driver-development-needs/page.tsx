@@ -74,18 +74,31 @@ const DriverDevelopmentNeedsPage = () => {
             return (
               <Card
                 key={need.value}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isSelected}
                 className={`cursor-pointer transition-all duration-200 ${isSelected
                   ? 'ring-2 ring-primary bg-primary/5 border-primary'
                   : 'hover:bg-accent/50 hover:border-accent'
                   }`}
                 onClick={() => handleNeedToggle(need.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleNeedToggle(need.value);
+                  }
+                }}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id={need.value.toLowerCase().replace(/\s+/g, '-')}
                       checked={isSelected}
-                      onCheckedChange={() => handleNeedToggle(need.value)}
+                      onCheckedChange={(checked) => {
+                        // Prevent event bubbling to avoid double triggering
+                        handleNeedToggle(need.value);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
                       className="mt-1"
                     />
                     <div className="flex items-start space-x-3 flex-1">

@@ -83,21 +83,70 @@ const ReviewSubmitPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Submit configuration to backend API
+      const response = await fetch('/api/configurations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-      markStepCompleted('review-submit');
-      setIsSubmitted(true);
+      if (!response.ok) {
+        throw new Error('Failed to submit configuration');
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        markStepCompleted('review-submit');
+
+        // Send email notifications
+        try {
+          const notificationData = {
+            id: result.configurationId,
+            contactInfo: formData.contactInfo || {},
+            submittedAt: new Date().toISOString(),
+            industry: formData.industryFocus || 'Not specified',
+            platforms: formData.corePlatforms || [],
+            features: formData.keyFeatures || []
+          };
+
+          await fetch('/api/notifications', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(notificationData)
+          });
+        } catch (emailError) {
+          console.error('Email notification error:', emailError);
+          // Don't fail the submission if emails fail
+        }
+
+        setIsSubmitted(true);
+
+        // Store configuration ID for future reference
+        localStorage.setItem('lastConfigurationId', result.configurationId);
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
     } catch (error) {
       console.error('Submission error:', error);
+      alert('Failed to submit configuration. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const generatePDF = () => {
-    // This would typically generate and download a PDF
-    alert('PDF generation feature will be implemented with a proper PDF library');
+    try {
+      const { generateConfigurationPDF } = require('@/lib/pdf-generator');
+      generateConfigurationPDF(formData);
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
   };
 
   const hasData = Object.values(sectionMappings).some(section => section.data);

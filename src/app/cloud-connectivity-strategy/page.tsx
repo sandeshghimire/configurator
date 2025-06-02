@@ -166,11 +166,20 @@ const CloudConnectivityStrategyPage = () => {
               return (
                 <Card
                   key={platform.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
                   className={`cursor-pointer transition-all duration-200 ${isSelected
                     ? 'ring-2 ring-primary bg-primary/5 border-primary'
                     : 'hover:bg-accent/50 hover:border-accent'
                     }`}
                   onClick={() => handlePlatformToggle(platform.id)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handlePlatformToggle(platform.id);
+                    }
+                  }}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-start space-x-3">

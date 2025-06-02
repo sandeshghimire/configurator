@@ -19,7 +19,9 @@ import {
   Mail,
   CheckSquare,
   ChevronRight,
-  Check
+  Check,
+  Download,
+  Upload
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -39,6 +41,7 @@ const Sidebar = () => {
     { href: '/cloud-connectivity-strategy', label: 'Cloud & Connectivity', icon: Cloud, id: 'cloud-connectivity-strategy' },
     { href: '/contact-information', label: 'Contact Information', icon: Mail, id: 'contact-information' },
     { href: '/review-submit', label: 'Review & Submit', icon: CheckSquare, id: 'review-submit' },
+    { href: '/import-export', label: 'Import / Export', icon: Download, id: 'import-export' },
   ];
 
   return (

@@ -99,11 +99,20 @@ const MiddlewareFrameworksPage = () => {
           {frameworks.map((framework) => (
             <Card
               key={framework.value}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selectedFrameworks.includes(framework.value)}
               className={`cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${selectedFrameworks.includes(framework.value)
                 ? 'border-blue-500 bg-blue-50'
                 : 'border-gray-200 hover:border-gray-300'
                 }`}
               onClick={() => handleCheckboxChange(framework.value, !selectedFrameworks.includes(framework.value))}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleCheckboxChange(framework.value, !selectedFrameworks.includes(framework.value));
+                }
+              }}
             >
               <CardContent className="p-6">
                 <div className="flex items-start space-x-4">
