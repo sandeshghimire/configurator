@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Cpu, Settings, Zap, Shield, Sparkles, CheckCircle } from "lucide-react";
+import { ArrowRight, Cpu, Settings, Zap, Shield, Sparkles } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 
 export default function Home() {
@@ -34,24 +34,17 @@ export default function Home() {
     }
   ];
 
-  const benefits = [
-    "Save weeks of research and planning time",
-    "Expert-validated component recommendations",
-    "Cost-optimized solutions for your budget",
-    "Future-proof architecture suggestions"
-  ];
-
   return (
     <PageLayout
       title=""
       description=""
       stepId="home"
     >
-      <div className="space-y-16">
+      <div className="space-y-12"> {/* Reduced from space-y-16 */}
         {/* Hero Section */}
-        <div className="text-center space-y-8">
-          <div className="space-y-6">
-            <div className="inline-flex items-center px-3 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-3">
+        <div className="text-center space-y-6"> {/* Reduced from space-y-8 */}
+          <div className="space-y-4"> {/* Reduced from space-y-6 */}
+            <div className="inline-flex items-center px-3 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-2"> {/* Reduced mb-3 to mb-2 */}
               <Sparkles className="w-3 h-3 mr-1" />
               AI-Powered Configuration
             </div>
@@ -66,21 +59,11 @@ export default function Home() {
               a tailored embedded system configuration with expert recommendations.
             </p>
           </div>
-
-          {/* Quick Benefits */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center space-x-2 text-xs text-muted-foreground">
-                <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
-                <span className="font-medium">{benefit}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Features Grid */}
-        <div className="space-y-8">
-          <div className="text-center space-y-4">
+        <div className="space-y-6"> {/* Reduced from space-y-8 */}
+          <div className="text-center space-y-3"> {/* Reduced from space-y-4 */}
             <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               Why Choose Our Configurator?
             </h2>
@@ -89,18 +72,13 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"> {/* Changed md:grid-cols-2 to md:grid-cols-4, added sm:grid-cols-2 */}
             {features.map((feature, index) => (
               <Card key={index} className="border hover:border-muted-foreground/50 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <CardContent className="p-8">
-                  <div className="space-y-4">
-                    <div className={`inline-flex w-16 h-16 ${feature.color} rounded-xl items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-8 h-8" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="scroll-m-20 text-lg font-semibold tracking-tight">{feature.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-6">{feature.description}</p>
-                    </div>
+                <CardContent className="p-6 flex flex-col items-center text-center"> {/* Added flex flex-col items-center text-center */}
+                  <div className="space-y-1"> {/* Reduced from space-y-3, removed icon div */}
+                    <h3 className="scroll-m-20 text-lg font-semibold tracking-tight">{feature.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-6">{feature.description}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -111,8 +89,8 @@ export default function Home() {
         {/* Enhanced Call to Action */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl opacity-5"></div>
-          <div className="relative bg-background border rounded-2xl p-12 text-center space-y-8">
-            <div className="space-y-4">
+          <div className="relative bg-background border rounded-2xl p-10 text-center space-y-6"> {/* Reduced p-12 to p-10 and space-y-8 to space-y-6 */}
+            <div className="space-y-3"> {/* Reduced from space-y-4 */}
               <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                 Ready to Configure Your Embedded System?
               </h2>
@@ -122,15 +100,15 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="space-y-6">
-              <Link href="/industry-focus" passHref>
+            <div className="space-y-4"> {/* Reduced from space-y-6 */}
+              <Link href="/configuration-details" passHref>
                 <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                   Start Configuration
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
 
-              <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
+              <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground"> {/* Reduced space-x-6 to space-x-4 */}
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="font-medium">Auto-save progress</span>
@@ -149,9 +127,9 @@ export default function Home() {
         </div>
 
         {/* Trust Indicators */}
-        <div className="text-center space-y-3 py-6 border-t">
+        <div className="text-center space-y-2 py-4 border-t"> {/* Reduced space-y-3 to space-y-2 and py-6 to py-4 */}
           <p className="text-xs font-medium">Trusted by embedded systems engineers worldwide</p>
-          <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"> {/* Reduced space-x-6 to gap-x-4, added flex-wrap and gap-y-1 */}
             <span className="font-medium">🏭 Industrial IoT</span>
             <span className="font-medium">🚗 Automotive</span>
             <span className="font-medium">🏥 Medical Devices</span>

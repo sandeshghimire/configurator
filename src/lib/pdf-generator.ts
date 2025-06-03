@@ -2,6 +2,8 @@ import jsPDF from 'jspdf';
 import { format } from 'date-fns';
 
 interface FormData {
+    title?: string;
+    description?: string;
     industryFocus?: string;
     otherIndustry?: string;
     corePlatforms?: string[];
@@ -56,6 +58,20 @@ export function generateConfigurationPDF(formData: FormData): void {
     pdf.setFont('helvetica', 'normal');
     pdf.text(`Generated: ${format(new Date(), 'PPP')}`, margin, currentY);
     currentY += 15;
+
+    // Configuration Details
+    if (formData.title || formData.description) {
+        currentY = addWrappedText('CONFIGURATION DETAILS', currentY, 14, true);
+        currentY += 5;
+
+        if (formData.title) {
+            currentY = addWrappedText(`Title: ${formData.title}`, currentY, 12, true);
+        }
+        if (formData.description) {
+            currentY = addWrappedText(`Description: ${formData.description}`, currentY);
+        }
+        currentY += 10;
+    }
 
     // Contact Information
     if (formData.contactInfo) {
@@ -200,7 +216,7 @@ export function generateConfigurationPDF(formData: FormData): void {
     }
 
     // Footer
-    const pageCount = pdf.internal.getNumberOfPages();
+    const pageCount = (pdf as any).getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
         pdf.setPage(i);
         pdf.setFontSize(8);

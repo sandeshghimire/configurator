@@ -45,8 +45,8 @@ export function useFormValidation({
             } else {
                 const errors: Record<string, string> = {};
 
-                if (result.error?.issues) {
-                    result.error.issues.forEach((issue) => {
+                if ('error' in result && result.error?.issues) {
+                    result.error.issues.forEach((issue: any) => {
                         const field = issue.path.join('.');
                         errors[field] = issue.message;
                     });
@@ -164,6 +164,10 @@ export function useFormValidation({
 // Helper function to get step schema
 function getStepSchema(stepId: string): z.ZodObject<any> | null {
     const schemas: Record<string, z.ZodObject<any>> = {
+        'configuration-details': z.object({
+            title: z.string().min(1, 'Configuration title is required'),
+            description: z.string().optional()
+        }),
         'industry-focus': z.object({
             industryFocus: z.string().min(1, 'Please select an industry focus'),
             otherIndustry: z.string().optional()

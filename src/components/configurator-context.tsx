@@ -12,6 +12,8 @@ interface ContactInfo {
 }
 
 interface FormData {
+    title?: string;
+    description?: string;
     industryFocus?: string;
     otherIndustry?: string;
     corePlatforms?: string[];

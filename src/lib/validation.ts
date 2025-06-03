@@ -60,8 +60,16 @@ export const cloudConnectivitySchema = z.object({
     dataProcessing: z.array(z.string()).min(1, 'Please select at least one data processing requirement')
 });
 
+// Configuration Details Schema
+export const configurationDetailsSchema = z.object({
+    title: z.string().min(1, 'Configuration title is required').min(3, 'Title must be at least 3 characters'),
+    description: z.string().optional()
+});
+
 // Complete Configuration Schema
 export const completeConfigurationSchema = z.object({
+    title: z.string().min(1),
+    description: z.string().optional(),
     industryFocus: z.string().min(1),
     otherIndustry: z.string().optional(),
     corePlatforms: z.array(z.string()).min(1),
@@ -78,6 +86,7 @@ export const completeConfigurationSchema = z.object({
 });
 
 // Export types
+export type ConfigurationDetails = z.infer<typeof configurationDetailsSchema>;
 export type ContactInfo = z.infer<typeof contactInfoSchema>;
 export type IndustryFocus = z.infer<typeof industryFocusSchema>;
 export type PlatformSelection = z.infer<typeof platformSelectionSchema>;
@@ -92,6 +101,8 @@ export type CompleteConfiguration = z.infer<typeof completeConfigurationSchema>;
 // Validation helper functions
 export const validateStep = (stepId: string, data: any) => {
     switch (stepId) {
+        case 'configuration-details':
+            return configurationDetailsSchema.safeParse(data);
         case 'industry-focus':
             return industryFocusSchema.safeParse(data);
         case 'core-platform-selection':

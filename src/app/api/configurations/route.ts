@@ -13,6 +13,8 @@ export async function POST(request: NextRequest) {
         // Serialize complex data structures
         const configurationData = {
             id: configId,
+            title: formData.title,
+            description: formData.description,
             industryFocus: formData.industryFocus,
             otherIndustry: formData.otherIndustry,
             corePlatforms: JSON.stringify(formData.corePlatforms || []),
@@ -26,8 +28,7 @@ export async function POST(request: NextRequest) {
             dataProcessing: JSON.stringify(formData.dataProcessing || []),
             cloudStrategy: formData.cloudStrategy,
             contactInfo: JSON.stringify(formData.contactInfo || {}),
-            status: 'submitted' as const,
-            createdAt: new Date().toISOString()
+            status: 'submitted' as const
         };
 
         // Save to database

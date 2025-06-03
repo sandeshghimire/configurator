@@ -24,6 +24,8 @@ import { LoadingSpinner, LoadingButton } from "@/components/loading-system";
 
 interface Configuration {
     id: string;
+    title?: string;
+    description?: string;
     industryFocus?: string;
     contactInfo: string;
     createdAt: string;
@@ -297,13 +299,20 @@ export default function AdminDashboard() {
                                     <div className="flex-1">
                                         <div className="flex items-center space-x-2">
                                             <h3 className="font-medium text-sm">
-                                                {contactInfo.companyName || contactInfo.fullName || 'Unknown'}
+                                                {config.title || contactInfo.companyName || contactInfo.fullName || 'Unknown'}
                                             </h3>
                                             <Badge className={getStatusColor(config.status)}>
                                                 {config.status}
                                             </Badge>
                                         </div>
-                                        <p className="text-xs text-gray-600">
+                                        {config.description && (
+                                            <p className="text-xs text-gray-600 mt-1">
+                                                {config.description.length > 100
+                                                    ? `${config.description.substring(0, 100)}...`
+                                                    : config.description}
+                                            </p>
+                                        )}
+                                        <p className="text-xs text-gray-600 mt-1">
                                             Industry: {config.industryFocus || 'Not specified'}
                                         </p>
                                         <p className="text-xs text-gray-500">
