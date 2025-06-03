@@ -4,11 +4,26 @@ import { randomUUID } from 'crypto';
 
 export async function POST(request: NextRequest) {
     try {
+        console.log('API: Starting configuration submission');
+        
         const formData = await request.json();
+        console.log('API: Received form data:', JSON.stringify(formData, null, 2));
+
+        // Validate required fields
+        if (!formData.contactInfo || !formData.contactInfo.fullName || !formData.contactInfo.email) {
+            console.error('API: Missing required contact information');
+            return NextResponse.json(
+                { success: false, error: 'Contact information is required' },
+                { status: 400 }
+            );
+        }
+
         const db = getDatabase();
+        console.log('API: Database instance obtained');
 
         // Generate unique ID for this configuration
         const configId = randomUUID();
+        console.log('API: Generated config ID:', configId);
 
         // Serialize complex data structures
         const configurationData = {
@@ -31,8 +46,11 @@ export async function POST(request: NextRequest) {
             status: 'submitted' as const
         };
 
+        console.log('API: Prepared configuration data for database:', configurationData);
+
         // Save to database
         await db.saveConfiguration(configurationData);
+        console.log('API: Configuration saved to database');
 
         // Track analytics for popular choices
         if (formData.industryFocus) {
