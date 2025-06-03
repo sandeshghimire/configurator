@@ -97,7 +97,24 @@ const ReviewSubmitPage = () => {
     'direct-cloud': 'Direct device-to-cloud communication without intermediate gateways. Simplifies architecture but requires robust device connectivity.',
     'gateway-based': 'Uses local gateways to aggregate and process data before cloud transmission. Provides protocol translation and local intelligence.',
     'mesh-networking': 'Devices communicate through peer-to-peer mesh networks for improved coverage and redundancy. Suitable for distributed sensor networks.',
-    'no-iot': 'Standalone system without cloud or network connectivity requirements. Focuses on local operation and data storage.'
+    'no-iot': 'Standalone system without cloud or network connectivity requirements. Focuses on local operation and data storage.',
+
+    // Cloud Platforms
+    'aws': 'Amazon Web Services - comprehensive cloud platform with IoT Core, extensive edge services, and global infrastructure. Strong enterprise features, machine learning services, and robust security.',
+    'azure': 'Microsoft Azure - enterprise-focused cloud with IoT Central, strong hybrid capabilities, and seamless Office 365 integration. Excellent for organizations using Microsoft ecosystem.',
+    'gcp': 'Google Cloud Platform - analytics and AI-focused cloud with IoT Core and powerful data processing capabilities. Strong in machine learning and real-time analytics.',
+    'private-cloud': 'Dedicated cloud infrastructure for enhanced security and control. Provides cloud benefits while maintaining data sovereignty and compliance requirements.',
+    'on-premise-only': 'Local infrastructure without cloud connectivity. Maximum data control and security but limited scalability and remote access.',
+    'iot-platform-integration': 'Integrate with managed IoT platforms for device management, fleet management, over-the-air updates, and centralized monitoring.',
+    'direct-cloud-connectivity': 'Direct cloud connectivity without managed IoT platform services. Uses basic cloud services for data storage and processing.',
+
+    // Data Processing Options
+    'edge-ai-processing': 'On-device artificial intelligence and machine learning for real-time inference, reduced latency, and privacy preservation. Requires powerful edge hardware and optimized AI frameworks.',
+    'cloud-ai-ml': 'Server-side machine learning processing with access to powerful compute resources and large datasets. Enables complex models and continuous learning but requires reliable connectivity.',
+    'real-time-streaming': 'Continuous data transmission for live monitoring, real-time analytics, and immediate response capabilities. Essential for time-critical applications and live dashboards.',
+
+    // Additional Core Platforms
+    'Unsure / Needs Consultation': 'Not sure which platform fits your needs? Our engineers will analyze your requirements and recommend the optimal platform based on performance, power, cost, and feature requirements specific to your application.'
   };
 
   // Helper function to get description for an option
@@ -518,6 +535,15 @@ const ReviewSubmitPage = () => {
     setIsSubmitting(true);
 
     try {
+      // Validate that we have minimum required data
+      if (!formData.contactInfo || !formData.contactInfo.fullName || !formData.contactInfo.email) {
+        alert('Please complete the contact information before submitting.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log('Submitting configuration data:', formData);
+
       // Submit configuration to backend API
       const response = await fetch('/api/configurations', {
         method: 'POST',
@@ -527,11 +553,23 @@ const ReviewSubmitPage = () => {
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit configuration');
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Failed to parse response JSON:', parseError);
+        throw new Error(`Server returned invalid JSON. Status: ${response.status}, Response: ${responseText}`);
       }
 
-      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${result.error || 'Failed to submit configuration'}`);
+      }
 
       if (result.success) {
         markStepCompleted('review-submit');
@@ -568,7 +606,8 @@ const ReviewSubmitPage = () => {
       }
     } catch (error) {
       console.error('Submission error:', error);
-      alert('Failed to submit configuration. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Failed to submit configuration: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
