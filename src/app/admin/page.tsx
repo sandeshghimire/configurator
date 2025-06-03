@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { format } from 'date-fns';
 import { LoadingSpinner, LoadingButton } from "@/components/loading-system";
+import { Input } from "@/components/ui/input";
 
 interface Configuration {
     id: string;
@@ -180,14 +181,36 @@ export default function AdminDashboard() {
         URL.revokeObjectURL(url);
     };
 
+    // Filter configurations based on search term
+    const filteredConfigurations = configurations.filter(config => {
+        if (!searchTerm) return true;
+
+        const searchLower = searchTerm.toLowerCase();
+        let contactInfo;
+        try {
+            contactInfo = JSON.parse(config.contactInfo);
+        } catch {
+            contactInfo = {};
+        }
+
+        return (
+            (config.title?.toLowerCase().includes(searchLower)) ||
+            (config.description?.toLowerCase().includes(searchLower)) ||
+            (config.industryFocus?.toLowerCase().includes(searchLower)) ||
+            (contactInfo.companyName?.toLowerCase().includes(searchLower)) ||
+            (contactInfo.fullName?.toLowerCase().includes(searchLower)) ||
+            (contactInfo.email?.toLowerCase().includes(searchLower))
+        );
+    });
+
     if (loading) {
         return (
-            <div className="p-6">
-                <div className="animate-pulse space-y-4">
-                    <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {[1, 2, 3].map(i => (
-                            <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            <div className="p-4">
+                <div className="animate-pulse space-y-3">
+                    <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="h-20 bg-gray-200 rounded"></div>
                         ))}
                     </div>
                 </div>
@@ -196,158 +219,166 @@ export default function AdminDashboard() {
     }
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="p-4 space-y-4">
             <div className="flex justify-between items-center">
-                <h1 className="text-xl font-bold">Admin Dashboard</h1>
+                <h1 className="text-lg font-bold">Admin Dashboard</h1>
                 <div className="flex space-x-2">
-                    <Button onClick={fetchConfigurations} variant="outline">
-                        <RefreshCw className="w-4 h-4 mr-2" />
+                    <Button onClick={fetchConfigurations} variant="outline" size="sm">
+                        <RefreshCw className="w-3 h-3 mr-1" />
                         Refresh
                     </Button>
-                    <Button onClick={downloadConfigurationData}>
-                        <Download className="w-4 h-4 mr-2" />
-                        Export Data
+                    <Button onClick={downloadConfigurationData} size="sm">
+                        <Download className="w-3 h-3 mr-1" />
+                        Export
                     </Button>
                 </div>
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-xs font-medium">Total Submissions</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-lg font-bold">{configurations.length}</div>
-                    </CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Card className="p-3">
+                    <div className="text-xs text-gray-600">Total</div>
+                    <div className="text-xl font-bold">{filteredConfigurations.length}</div>
                 </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-xs font-medium">Pending Review</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-lg font-bold">
-                            {configurations.filter(c => c.status === 'submitted').length}
-                        </div>
-                    </CardContent>
+                <Card className="p-3">
+                    <div className="text-xs text-gray-600">Pending</div>
+                    <div className="text-xl font-bold text-blue-600">
+                        {filteredConfigurations.filter(c => c.status === 'submitted').length}
+                    </div>
                 </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-xs font-medium">Completed</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-lg font-bold">
-                            {configurations.filter(c => c.status === 'completed').length}
-                        </div>
-                    </CardContent>
+                <Card className="p-3">
+                    <div className="text-xs text-gray-600">Completed</div>
+                    <div className="text-xl font-bold text-green-600">
+                        {filteredConfigurations.filter(c => c.status === 'completed').length}
+                    </div>
                 </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-xs font-medium">This Week</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-lg font-bold">
-                            {configurations.filter(c =>
-                                new Date(c.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-                            ).length}
-                        </div>
-                    </CardContent>
+                <Card className="p-3">
+                    <div className="text-xs text-gray-600">This Week</div>
+                    <div className="text-xl font-bold text-purple-600">
+                        {filteredConfigurations.filter(c =>
+                            new Date(c.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                        ).length}
+                    </div>
                 </Card>
-            </div>
-
-            {/* Analytics Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {analytics.map((analytic, index) => (
-                    <Card key={index}>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-xs font-medium flex items-center">
-                                <BarChart3 className="w-4 h-4 mr-2" />
-                                Popular {analytic.category.charAt(0).toUpperCase() + analytic.category.slice(1)} Choices
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-2">
-                                {analytic.popularChoices.slice(0, 5).map((choice, idx) => (
-                                    <div key={idx} className="flex justify-between items-center">
-                                        <span className="text-xs truncate">{choice.option}</span>
-                                        <Badge variant="secondary">{choice.count}</Badge>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
             </div>
 
             {/* Configurations List */}
             <Card>
-                <CardHeader>
-                    <CardTitle className="text-base">Recent Submissions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        {configurations.slice(0, 10).map((config) => {
-                            let contactInfo;
-                            try {
-                                contactInfo = JSON.parse(config.contactInfo);
-                            } catch {
-                                contactInfo = {};
-                            }
-
-                            return (
-                                <div key={config.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
-                                    <div className="flex-1">
-                                        <div className="flex items-center space-x-2">
-                                            <h3 className="font-medium text-sm">
-                                                {config.title || contactInfo.companyName || contactInfo.fullName || 'Unknown'}
-                                            </h3>
-                                            <Badge className={getStatusColor(config.status)}>
-                                                {config.status}
-                                            </Badge>
-                                        </div>
-                                        {config.description && (
-                                            <p className="text-xs text-gray-600 mt-1">
-                                                {config.description.length > 100
-                                                    ? `${config.description.substring(0, 100)}...`
-                                                    : config.description}
-                                            </p>
-                                        )}
-                                        <p className="text-xs text-gray-600 mt-1">
-                                            Industry: {config.industryFocus || 'Not specified'}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            Submitted: {format(new Date(config.createdAt), 'PPP')}
-                                        </p>
-                                    </div>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setSelectedConfig(config)}
-                                    >
-                                        <Eye className="w-4 h-4 mr-2" />
-                                        View
-                                    </Button>
-                                </div>
-                            );
-                        })}
+                <CardHeader className="pb-3">
+                    <div className="flex justify-between items-center">
+                        <CardTitle className="text-sm">Submissions ({filteredConfigurations.length})</CardTitle>
+                        <div className="relative w-48">
+                            <Search className="w-3 h-3 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <Input
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-7 h-8 text-xs"
+                            />
+                        </div>
                     </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                    {filteredConfigurations.length === 0 ? (
+                        <div className="text-center py-6 text-gray-500 text-sm">
+                            {searchTerm ? 'No matches found.' : 'No submissions yet.'}
+                        </div>
+                    ) : (
+                        <div className="space-y-2">
+                            {filteredConfigurations.slice(0, 15).map((config) => {
+                                let contactInfo;
+                                try {
+                                    contactInfo = JSON.parse(config.contactInfo);
+                                } catch {
+                                    contactInfo = {};
+                                }
+
+                                return (
+                                    <div key={config.id} className="flex items-center justify-between p-2 border rounded hover:bg-gray-50 transition-colors">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center space-x-2">
+                                                <h3 className="font-medium text-xs truncate">
+                                                    {config.title || contactInfo.companyName || contactInfo.fullName || 'Unknown'}
+                                                </h3>
+                                                <Badge className={`${getStatusColor(config.status)} text-xs px-1 py-0`}>
+                                                    {config.status}
+                                                </Badge>
+                                            </div>
+                                            <div className="flex items-center space-x-3 mt-1">
+                                                <span className="text-xs text-gray-500">
+                                                    {config.industryFocus || 'No industry'}
+                                                </span>
+                                                <span className="text-xs text-gray-400">
+                                                    {format(new Date(config.createdAt), 'MMM dd')}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => setSelectedConfig(config)}
+                                            className="h-6 px-2"
+                                        >
+                                            <Eye className="w-3 h-3" />
+                                        </Button>
+                                    </div>
+                                );
+                            })}
+                            {filteredConfigurations.length > 15 && (
+                                <div className="text-center pt-2">
+                                    <p className="text-xs text-gray-500">
+                                        Showing 15 of {filteredConfigurations.length}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
-            {/* Configuration Detail Modal would go here */}
+            {/* Configuration Detail Modal */}
             {selectedConfig && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-                        <CardHeader>
+                    <Card className="max-w-xl w-full max-h-[70vh] overflow-y-auto">
+                        <CardHeader className="pb-2">
                             <div className="flex justify-between items-center">
-                                <CardTitle className="text-base">Configuration Details</CardTitle>
-                                <Button variant="ghost" onClick={() => setSelectedConfig(null)}>×</Button>
+                                <CardTitle className="text-sm">Configuration Details</CardTitle>
+                                <Button variant="ghost" size="sm" onClick={() => setSelectedConfig(null)}>×</Button>
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <pre className="text-xs bg-gray-100 p-4 rounded overflow-x-auto">
-                                {JSON.stringify(selectedConfig, null, 2)}
-                            </pre>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="text-xs font-medium text-gray-600">Status</label>
+                                    <div className="mt-1">
+                                        <Badge className={getStatusColor(selectedConfig.status)}>
+                                            {selectedConfig.status}
+                                        </Badge>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="text-xs font-medium text-gray-600">Created</label>
+                                    <p className="text-sm">{format(new Date(selectedConfig.createdAt), 'PPP')}</p>
+                                </div>
+                                {selectedConfig.industryFocus && (
+                                    <div>
+                                        <label className="text-xs font-medium text-gray-600">Industry</label>
+                                        <p className="text-sm">{selectedConfig.industryFocus}</p>
+                                    </div>
+                                )}
+                                {selectedConfig.description && (
+                                    <div>
+                                        <label className="text-xs font-medium text-gray-600">Description</label>
+                                        <p className="text-sm">{selectedConfig.description}</p>
+                                    </div>
+                                )}
+                                <div>
+                                    <label className="text-xs font-medium text-gray-600">Contact Info</label>
+                                    <pre className="text-xs bg-gray-100 p-2 rounded mt-1 overflow-x-auto">
+                                        {selectedConfig.contactInfo}
+                                    </pre>
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

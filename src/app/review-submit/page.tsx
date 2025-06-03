@@ -32,15 +32,20 @@ import {
   Zap,
   Star,
   Target,
-  Info
+  Info,
+  Copy,
+  Check
 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
+import { cn } from "@/lib/utils";
 
 const ReviewSubmitPage = () => {
   const { formData, markStepCompleted } = useConfigurator();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [viewMode, setViewMode] = useState<'markdown' | 'cards'>('markdown');
 
   // Comprehensive mapping of options to their detailed descriptions
   const optionDescriptions = {
@@ -623,6 +628,176 @@ const ReviewSubmitPage = () => {
     }
   };
 
+  const copyMarkdownToClipboard = async () => {
+    try {
+      const markdownContent = generateMarkdownContent();
+      await navigator.clipboard.writeText(markdownContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      alert('Failed to copy to clipboard. Please try again.');
+    }
+  };
+
+  const generateMarkdownContent = () => {
+    let markdown = `# ${formData.title || 'Embedded System Configuration'}\n\n`;
+
+    if (formData.description) {
+      markdown += `> ${formData.description}\n\n`;
+    }
+
+    markdown += `## Table of Contents\n\n`;
+    configurationSections.forEach((section, index) => {
+      markdown += `${index + 1}. [${section.title}](#${section.id.replace(/\s+/g, '-').toLowerCase()})\n`;
+    });
+    markdown += '\n';
+
+    // Add configuration sections
+    configurationSections.forEach((section) => {
+      markdown += `## ${section.title}\n\n`;
+      markdown += `*${section.description}*\n\n`;
+
+      if (section.id === 'configuration-details' && formData.title) {
+        markdown += `**Project Title:** ${formData.title}\n\n`;
+        if (formData.description) {
+          markdown += `**Description:**\n> ${formData.description}\n\n`;
+        }
+      }
+
+      if (section.id === 'contact-info' && formData.contactInfo) {
+        markdown += `**Contact Information:**\n\n`;
+        if (formData.contactInfo.fullName) markdown += `- **Name:** ${formData.contactInfo.fullName}\n`;
+        if (formData.contactInfo.email) markdown += `- **Email:** ${formData.contactInfo.email}\n`;
+        if (formData.contactInfo.companyName) markdown += `- **Company:** ${formData.contactInfo.companyName}\n`;
+        if (formData.contactInfo.phoneNumber) markdown += `- **Phone:** ${formData.contactInfo.phoneNumber}\n`;
+        if (formData.contactInfo.projectDescription) {
+          markdown += `\n**Project Description:**\n> ${formData.contactInfo.projectDescription}\n`;
+        }
+        markdown += '\n';
+      }
+
+      if (section.id === 'industry-focus' && formData.industryFocus) {
+        markdown += `**Primary Industry:** ${formData.industryFocus}\n\n`;
+        if (formData.otherIndustry) {
+          markdown += `**Specific Market Segment:** ${formData.otherIndustry}\n\n`;
+        }
+      }
+
+      if (section.id === 'core-platforms' && formData.corePlatforms?.length) {
+        markdown += `**Selected Platforms:**\n\n`;
+        formData.corePlatforms.forEach((platform, index) => {
+          markdown += `### ${index + 1}. ${platform}\n\n`;
+          const description = getOptionDescription(platform);
+          if (description) {
+            markdown += `${description}\n\n`;
+          }
+        });
+      }
+
+      if (section.id === 'operating-system' && formData.operatingSystem) {
+        markdown += `**Operating System:** ${formData.operatingSystem}\n\n`;
+        const description = getOptionDescription(formData.operatingSystem);
+        if (description) {
+          markdown += `${description}\n\n`;
+        }
+      }
+
+      if (section.id === 'key-features' && formData.keyFeatures?.length) {
+        markdown += `**Required Features:**\n\n`;
+        formData.keyFeatures.forEach((feature) => {
+          markdown += `- **${feature}**\n`;
+          const description = getOptionDescription(feature);
+          if (description) {
+            markdown += `  ${description}\n`;
+          }
+          markdown += '\n';
+        });
+      }
+
+      if (section.id === 'hardware-requirements' && formData.hardwareRequirements?.length) {
+        markdown += `**Hardware Components:**\n\n`;
+        formData.hardwareRequirements.forEach((requirement) => {
+          markdown += `- **${requirement}**\n`;
+          const description = getOptionDescription(requirement);
+          if (description) {
+            markdown += `  ${description}\n`;
+          }
+          markdown += '\n';
+        });
+      }
+
+      if (section.id === 'middleware-frameworks' && formData.middlewareFrameworks?.length) {
+        markdown += `**Selected Frameworks:**\n\n`;
+        formData.middlewareFrameworks.forEach((framework) => {
+          markdown += `- **${framework}**\n`;
+          const description = getOptionDescription(framework);
+          if (description) {
+            markdown += `  ${description}\n`;
+          }
+          markdown += '\n';
+        });
+      }
+
+      if (section.id === 'driver-needs' && formData.driverNeeds?.length) {
+        markdown += `**Development Requirements:**\n\n`;
+        formData.driverNeeds.forEach((need) => {
+          markdown += `- **${need}**\n`;
+          const description = getOptionDescription(need);
+          if (description) {
+            markdown += `  ${description}\n`;
+          }
+          markdown += '\n';
+        });
+      }
+
+      if (section.id === 'cloud-connectivity') {
+        if (formData.cloudStrategy) {
+          markdown += `**Strategy:** ${getDisplayLabel(formData.cloudStrategy)}\n\n`;
+          const description = getOptionDescription(formData.cloudStrategy);
+          if (description) {
+            markdown += `${description}\n\n`;
+          }
+        }
+
+        if (formData.cloudPlatforms && formData.cloudPlatforms.length > 0) {
+          markdown += `**Cloud Platforms:**\n`;
+          formData.cloudPlatforms.forEach((platform) => {
+            markdown += `- ${platform}\n`;
+          });
+          markdown += '\n';
+        }
+
+        if (formData.iotIntegration) {
+          markdown += `**IoT Integration:** ${getDisplayLabel(formData.iotIntegration)}\n\n`;
+          const description = getOptionDescription(formData.iotIntegration);
+          if (description) {
+            markdown += `${description}\n\n`;
+          }
+        }
+
+        if (formData.dataProcessing && formData.dataProcessing.length > 0) {
+          markdown += `**Data Processing Requirements:**\n`;
+          formData.dataProcessing.forEach((processing) => {
+            markdown += `- **${processing}**\n`;
+            const description = getOptionDescription(processing);
+            if (description) {
+              markdown += `  ${description}\n`;
+            }
+            markdown += '\n';
+          });
+        }
+      }
+
+      markdown += '---\n\n';
+    });
+
+    markdown += `*Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}*\n`;
+    markdown += `*Configuration ready for engineering review*\n`;
+
+    return markdown;
+  };
+
   // Calculate completion stats
   const totalSections = 10; // Total number of configuration sections
   const completedSectionsCount = configurationSections.length;
@@ -714,8 +889,399 @@ const ReviewSubmitPage = () => {
           </div>
         </div>
 
-        {/* Configuration Details Grid */}
-        {configurationSections.length > 0 ? (
+        {/* View Toggle */}
+        <div className="flex justify-center mb-6">
+          <div className="bg-gray-100 p-1 rounded-lg">
+            <button
+              onClick={() => setViewMode('markdown')}
+              className={cn(
+                "px-4 py-2 rounded-md text-sm font-medium transition-colors",
+                viewMode === 'markdown'
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+              )}
+            >
+              📄 Markdown View
+            </button>
+            <button
+              onClick={() => setViewMode('cards')}
+              className={cn(
+                "px-4 py-2 rounded-md text-sm font-medium transition-colors",
+                viewMode === 'cards'
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+              )}
+            >
+              🗃️ Card View
+            </button>
+          </div>
+        </div>
+
+        {/* Markdown-Style Configuration Display */}
+        {viewMode === 'markdown' && configurationSections.length > 0 && (
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            {/* Markdown Header */}
+            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  <h2 className="text-xl font-mono font-semibold text-gray-900">
+                    Configuration.md
+                  </h2>
+                  <Badge variant="secondary" className="text-xs">
+                    Generated {new Date().toLocaleDateString()}
+                  </Badge>
+                </div>
+                <Button
+                  onClick={copyMarkdownToClipboard}
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4 mr-2 text-green-600" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Markdown
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            {/* Markdown Content */}
+            <div className="p-6 font-mono text-sm leading-relaxed space-y-8">
+              {/* Title Section */}
+              <div className="space-y-3">
+                <h1 className="text-3xl font-bold text-gray-900 font-sans border-b-2 border-gray-200 pb-2">
+                  # {formData.title || 'Embedded System Configuration'}
+                </h1>
+                {formData.description && (
+                  <div className="bg-blue-50 border-l-4 border-blue-400 pl-4 py-3 rounded-r">
+                    <p className="text-gray-700 font-sans italic">
+                      {formData.description}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Table of Contents */}
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 font-sans">
+                  ## Table of Contents
+                </h3>
+                <div className="grid md:grid-cols-2 gap-2 text-blue-600">
+                  {configurationSections.map((section, index) => (
+                    <div key={section.id} className="flex items-center gap-2">
+                      <span className="text-gray-500">{index + 1}.</span>
+                      <Link href={`#${section.id}`} className="hover:underline">
+                        {section.title}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Configuration Sections */}
+              {configurationSections.map((section, sectionIndex) => (
+                <div key={section.id} id={section.id} className="space-y-4">
+                  {/* Section Header */}
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-gray-900 font-sans border-b border-gray-300 pb-2 flex items-center gap-3">
+                      <span className="text-blue-600">##</span>
+                      <section.icon className="w-6 h-6 text-blue-600" />
+                      {section.title}
+                    </h2>
+                    <Link href={section.editLink}>
+                      <Button variant="outline" size="sm" className="shrink-0">
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {/* Section Description */}
+                  <div className="text-gray-600 italic mb-4">
+                    *{section.description}*
+                  </div>
+
+                  {/* Section Content in Markdown Style */}
+                  <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                    {section.id === 'configuration-details' && formData.title && (
+                      <div className="space-y-3">
+                        <div className="font-semibold text-gray-900 text-lg font-sans">
+                          **Project Title:** {formData.title}
+                        </div>
+                        {formData.description && (
+                          <div className="space-y-2">
+                            <div className="font-semibold text-gray-700">**Description:**</div>
+                            <div className="bg-white p-3 rounded border-l-4 border-blue-400 font-sans">
+                              {formData.description}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {section.id === 'contact-info' && formData.contactInfo && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Contact Information**</h4>
+                        <div className="grid md:grid-cols-2 gap-4 bg-white p-4 rounded border">
+                          {formData.contactInfo.fullName && (
+                            <div className="space-y-1">
+                              <div className="text-gray-600">👤 **Name:**</div>
+                              <div className="font-sans">`{formData.contactInfo.fullName}`</div>
+                            </div>
+                          )}
+                          {formData.contactInfo.email && (
+                            <div className="space-y-1">
+                              <div className="text-gray-600">📧 **Email:**</div>
+                              <div className="font-sans">`{formData.contactInfo.email}`</div>
+                            </div>
+                          )}
+                          {formData.contactInfo.companyName && (
+                            <div className="space-y-1">
+                              <div className="text-gray-600">🏢 **Company:**</div>
+                              <div className="font-sans">`{formData.contactInfo.companyName}`</div>
+                            </div>
+                          )}
+                          {formData.contactInfo.phoneNumber && (
+                            <div className="space-y-1">
+                              <div className="text-gray-600">📞 **Phone:**</div>
+                              <div className="font-sans">`{formData.contactInfo.phoneNumber}`</div>
+                            </div>
+                          )}
+                        </div>
+                        {formData.contactInfo.projectDescription && (
+                          <div className="space-y-2">
+                            <div className="font-semibold text-gray-700">**Project Description:**</div>
+                            <div className="bg-white p-3 rounded border-l-4 border-green-400 font-sans">
+                              {formData.contactInfo.projectDescription}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {section.id === 'industry-focus' && formData.industryFocus && (
+                      <div className="space-y-3">
+                        <div className="space-y-2">
+                          <div className="font-semibold text-gray-700">**Primary Industry:**</div>
+                          <div className="bg-white px-3 py-2 rounded border font-sans">
+                            🎯 {formData.industryFocus}
+                          </div>
+                        </div>
+                        {formData.otherIndustry && (
+                          <div className="space-y-2">
+                            <div className="font-semibold text-gray-700">**Specific Market Segment:**</div>
+                            <div className="bg-white p-3 rounded border-l-4 border-purple-400 font-sans">
+                              {formData.otherIndustry}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {section.id === 'core-platforms' && formData.corePlatforms?.length && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Selected Platforms:**</h4>
+                        {formData.corePlatforms.map((platform, index) => (
+                          <div key={index} className="bg-white rounded border-l-4 border-blue-500 p-4">
+                            <div className="font-semibold text-blue-700 mb-2 font-sans">
+                              ### {index + 1}. {platform}
+                            </div>
+                            {getOptionDescription(platform) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-blue-50 p-3 rounded">
+                                {getOptionDescription(platform)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.id === 'operating-system' && formData.operatingSystem && (
+                      <div className="space-y-3">
+                        <div className="bg-white p-4 rounded border-l-4 border-green-500">
+                          <div className="font-semibold text-green-700 mb-2 font-sans">
+                            💿 **Operating System:** {formData.operatingSystem}
+                          </div>
+                          {getOptionDescription(formData.operatingSystem) && (
+                            <div className="text-gray-700 text-sm font-sans leading-relaxed bg-green-50 p-3 rounded mt-3">
+                              {getOptionDescription(formData.operatingSystem)}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {section.id === 'key-features' && formData.keyFeatures?.length && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Required Features:**</h4>
+                        {formData.keyFeatures.map((feature, index) => (
+                          <div key={index} className="bg-white rounded border-l-4 border-yellow-500 p-4">
+                            <div className="font-semibold text-yellow-700 mb-2 font-sans flex items-center gap-2">
+                              ⭐ {feature}
+                            </div>
+                            {getOptionDescription(feature) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-yellow-50 p-3 rounded">
+                                {getOptionDescription(feature)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.id === 'hardware-requirements' && formData.hardwareRequirements?.length && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Hardware Components:**</h4>
+                        {formData.hardwareRequirements.map((requirement, index) => (
+                          <div key={index} className="bg-white rounded border-l-4 border-green-500 p-4">
+                            <div className="font-semibold text-green-700 mb-2 font-sans flex items-center gap-2">
+                              🔧 {requirement}
+                            </div>
+                            {getOptionDescription(requirement) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-green-50 p-3 rounded">
+                                {getOptionDescription(requirement)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.id === 'middleware-frameworks' && formData.middlewareFrameworks?.length && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Selected Frameworks:**</h4>
+                        {formData.middlewareFrameworks.map((framework, index) => (
+                          <div key={index} className="bg-white rounded border-l-4 border-purple-500 p-4">
+                            <div className="font-semibold text-purple-700 mb-2 font-sans flex items-center gap-2">
+                              📦 {framework}
+                            </div>
+                            {getOptionDescription(framework) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-purple-50 p-3 rounded">
+                                {getOptionDescription(framework)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.id === 'driver-needs' && formData.driverNeeds?.length && (
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-900 font-sans">**Development Requirements:**</h4>
+                        {formData.driverNeeds.map((need, index) => (
+                          <div key={index} className="bg-white rounded border-l-4 border-orange-500 p-4">
+                            <div className="font-semibold text-orange-700 mb-2 font-sans flex items-center gap-2">
+                              ⚡ {need}
+                            </div>
+                            {getOptionDescription(need) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-orange-50 p-3 rounded">
+                                {getOptionDescription(need)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.id === 'cloud-connectivity' && (
+                      <div className="space-y-4">
+                        {formData.cloudStrategy && (
+                          <div className="bg-white rounded border-l-4 border-indigo-500 p-4">
+                            <div className="font-semibold text-indigo-700 mb-2 font-sans">
+                              ☁️ **Strategy:** {getDisplayLabel(formData.cloudStrategy)}
+                            </div>
+                            {getOptionDescription(formData.cloudStrategy) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-indigo-50 p-3 rounded">
+                                {getOptionDescription(formData.cloudStrategy)}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {formData.cloudPlatforms && formData.cloudPlatforms.length > 0 && (
+                          <div className="space-y-2">
+                            <div className="font-semibold text-gray-700">**Cloud Platforms:**</div>
+                            <div className="bg-white p-3 rounded border">
+                              {formData.cloudPlatforms.map((platform, index) => (
+                                <div key={index} className="inline-block mr-2 mb-2">
+                                  <code className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                                    {platform}
+                                  </code>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {formData.iotIntegration && (
+                          <div className="bg-white rounded border-l-4 border-green-500 p-4">
+                            <div className="font-semibold text-green-700 mb-2 font-sans">
+                              📡 **IoT Integration:** {getDisplayLabel(formData.iotIntegration)}
+                            </div>
+                            {getOptionDescription(formData.iotIntegration) && (
+                              <div className="text-gray-700 text-sm font-sans leading-relaxed bg-green-50 p-3 rounded">
+                                {getOptionDescription(formData.iotIntegration)}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {formData.dataProcessing && formData.dataProcessing.length > 0 && (
+                          <div className="space-y-2">
+                            <div className="font-semibold text-gray-700">**Data Processing Requirements:**</div>
+                            {formData.dataProcessing.map((processing, index) => (
+                              <div key={index} className="bg-white rounded border-l-4 border-cyan-500 p-3">
+                                <div className="font-semibold text-cyan-700 font-sans flex items-center gap-2">
+                                  🔄 {processing}
+                                </div>
+                                {getOptionDescription(processing) && (
+                                  <div className="text-gray-700 text-sm font-sans leading-relaxed bg-cyan-50 p-2 rounded mt-2">
+                                    {getOptionDescription(processing)}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Add separator between sections */}
+                  {sectionIndex < configurationSections.length - 1 && (
+                    <div className="border-b border-gray-200 my-8"></div>
+                  )}
+                </div>
+              ))}
+
+              {/* Footer */}
+              <div className="mt-12 pt-6 border-t-2 border-gray-300">
+                <div className="text-center space-y-2">
+                  <div className="text-gray-600 font-sans">
+                    ---
+                  </div>
+                  <div className="text-sm text-gray-500 font-sans">
+                    Generated on {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
+                  </div>
+                  <div className="text-sm text-gray-500 font-sans">
+                    Configuration ready for engineering review
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Original Card View */}
+        {viewMode === 'cards' && configurationSections.length > 0 && (
           <div className="grid gap-6">
             {configurationSections.map((section) => (
               <Card key={section.id} className="overflow-hidden hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
@@ -748,7 +1314,9 @@ const ReviewSubmitPage = () => {
               </Card>
             ))}
           </div>
-        ) : (
+        )}
+
+        {configurationSections.length === 0 && (
           <Alert className="border-orange-200 bg-orange-50">
             <AlertCircle className="h-4 w-4 text-orange-600" />
             <AlertDescription className="text-orange-800">
