@@ -17,7 +17,14 @@ import {
     Search,
     Mail,
     Phone,
-    Building
+    Building,
+    User,
+    Clock,
+    MapPin,
+    Globe,
+    CheckCircle,
+    AlertCircle,
+    Send
 } from "lucide-react";
 import { format } from 'date-fns';
 import { LoadingSpinner, LoadingButton } from "@/components/loading-system";
@@ -175,6 +182,53 @@ export default function AdminDashboard() {
         const link = document.createElement('a');
         link.href = url;
         link.download = `configurations_${format(new Date(), 'yyyy-MM-dd')}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    const updateConfigurationStatus = async (configId: string, newStatus: Configuration['status']) => {
+        try {
+            const response = await fetch(`/api/configurations/${configId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (response.ok) {
+                setConfigurations(prev =>
+                    prev.map(config =>
+                        config.id === configId
+                            ? { ...config, status: newStatus }
+                            : config
+                    )
+                );
+                if (selectedConfig?.id === configId) {
+                    setSelectedConfig(prev => prev ? { ...prev, status: newStatus } : null);
+                }
+            }
+        } catch (error) {
+            console.error('Failed to update status:', error);
+        }
+    };
+
+    const sendFollowUpEmail = async (contactInfo: any) => {
+        // This would integrate with your email service
+        const emailBody = `Dear ${contactInfo.fullName || 'Customer'},\n\nThank you for your configuration submission. We are reviewing your requirements and will get back to you soon.\n\nBest regards,\nThe Configuration Team`;
+
+        if (contactInfo.email) {
+            window.open(`mailto:${contactInfo.email}?subject=Configuration Follow-up&body=${encodeURIComponent(emailBody)}`);
+        }
+    };
+
+    const exportSingleConfiguration = (config: Configuration) => {
+        const dataStr = JSON.stringify(config, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `configuration_${config.id}_${format(new Date(), 'yyyy-MM-dd')}.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -339,46 +393,242 @@ export default function AdminDashboard() {
             {/* Configuration Detail Modal */}
             {selectedConfig && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <Card className="max-w-xl w-full max-h-[70vh] overflow-y-auto">
-                        <CardHeader className="pb-2">
-                            <div className="flex justify-between items-center">
-                                <CardTitle className="text-sm">Configuration Details</CardTitle>
-                                <Button variant="ghost" size="sm" onClick={() => setSelectedConfig(null)}>×</Button>
+                    <Card className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <CardHeader className="pb-4 border-b">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <CardTitle className="text-lg flex items-center gap-2">
+                                        <Building className="w-5 h-5" />
+                                        Configuration Details
+                                    </CardTitle>
+                                    <p className="text-sm text-gray-500 mt-1">ID: {selectedConfig.id}</p>
+                                </div>
+                                <Button variant="ghost" size="sm" onClick={() => setSelectedConfig(null)}>
+                                    ×
+                                </Button>
                             </div>
                         </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                <div>
-                                    <label className="text-xs font-medium text-gray-600">Status</label>
-                                    <div className="mt-1">
-                                        <Badge className={getStatusColor(selectedConfig.status)}>
-                                            {selectedConfig.status}
-                                        </Badge>
+                        <CardContent className="p-6">
+                            {(() => {
+                                let contactInfo;
+                                try {
+                                    contactInfo = JSON.parse(selectedConfig.contactInfo);
+                                } catch {
+                                    contactInfo = {};
+                                }
+
+                                return (
+                                    <div className="space-y-8">
+                                        {/* Status and Quick Actions */}
+                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                            <div className="flex items-center gap-3">
+                                                <Badge className={`${getStatusColor(selectedConfig.status)} px-3 py-1`}>
+                                                    {selectedConfig.status.toUpperCase()}
+                                                </Badge>
+                                                <div className="flex items-center text-sm text-gray-600">
+                                                    <Clock className="w-4 h-4 mr-1" />
+                                                    {format(new Date(selectedConfig.createdAt), 'PPP p')}
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                {selectedConfig.status === 'submitted' && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        onClick={() => updateConfigurationStatus(selectedConfig.id, 'reviewed')}
+                                                    >
+                                                        <CheckCircle className="w-4 h-4 mr-1" />
+                                                        Mark Reviewed
+                                                    </Button>
+                                                )}
+                                                {selectedConfig.status === 'reviewed' && (
+                                                    <Button
+                                                        size="sm"
+                                                        onClick={() => updateConfigurationStatus(selectedConfig.id, 'completed')}
+                                                    >
+                                                        <CheckCircle className="w-4 h-4 mr-1" />
+                                                        Mark Completed
+                                                    </Button>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Main Information Grid */}
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                            {/* Contact Information */}
+                                            <div>
+                                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                                    <User className="w-5 h-5 mr-2" />
+                                                    Contact Information
+                                                </h3>
+                                                <div className="space-y-4">
+                                                    {contactInfo.fullName && (
+                                                        <div className="flex items-center gap-3">
+                                                            <User className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Full Name</label>
+                                                                <p className="text-sm font-medium">{contactInfo.fullName}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {contactInfo.email && (
+                                                        <div className="flex items-center gap-3">
+                                                            <Mail className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Email</label>
+                                                                <a href={`mailto:${contactInfo.email}`} className="text-sm text-blue-600 hover:underline">
+                                                                    {contactInfo.email}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {contactInfo.phone && (
+                                                        <div className="flex items-center gap-3">
+                                                            <Phone className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Phone</label>
+                                                                <a href={`tel:${contactInfo.phone}`} className="text-sm text-blue-600 hover:underline">
+                                                                    {contactInfo.phone}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {contactInfo.companyName && (
+                                                        <div className="flex items-center gap-3">
+                                                            <Building className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Company</label>
+                                                                <p className="text-sm font-medium">{contactInfo.companyName}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {contactInfo.jobTitle && (
+                                                        <div className="flex items-center gap-3">
+                                                            <User className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Job Title</label>
+                                                                <p className="text-sm">{contactInfo.jobTitle}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {(contactInfo.city || contactInfo.country) && (
+                                                        <div className="flex items-center gap-3">
+                                                            <MapPin className="w-4 h-4 text-gray-400" />
+                                                            <div>
+                                                                <label className="text-xs font-medium text-gray-600 block">Location</label>
+                                                                <p className="text-sm">
+                                                                    {[contactInfo.city, contactInfo.country].filter(Boolean).join(', ')}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Project Information */}
+                                            <div>
+                                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                                    <Globe className="w-5 h-5 mr-2" />
+                                                    Project Details
+                                                </h3>
+                                                <div className="space-y-4">
+                                                    {selectedConfig.title && (
+                                                        <div>
+                                                            <label className="text-xs font-medium text-gray-600 block mb-1">Project Title</label>
+                                                            <p className="text-sm font-medium">{selectedConfig.title}</p>
+                                                        </div>
+                                                    )}
+                                                    {selectedConfig.industryFocus && (
+                                                        <div>
+                                                            <label className="text-xs font-medium text-gray-600 block mb-1">Industry Focus</label>
+                                                            <Badge variant="secondary" className="text-xs">
+                                                                {selectedConfig.industryFocus}
+                                                            </Badge>
+                                                        </div>
+                                                    )}
+                                                    {selectedConfig.description && (
+                                                        <div>
+                                                            <label className="text-xs font-medium text-gray-600 block mb-1">Description</label>
+                                                            <p className="text-sm leading-relaxed bg-gray-50 p-3 rounded">
+                                                                {selectedConfig.description}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Configuration Data */}
+                                        <div>
+                                            <details className="group">
+                                                <summary className="cursor-pointer text-lg font-semibold text-gray-900 mb-4 hover:text-gray-700 flex items-center">
+                                                    <BarChart3 className="w-5 h-5 mr-2" />
+                                                    Technical Configuration Data
+                                                    <span className="ml-auto text-xs text-gray-500">(Click to expand)</span>
+                                                </summary>
+                                                <div className="mt-4">
+                                                    <pre className="text-xs bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto max-h-80 border">
+                                                        {JSON.stringify(selectedConfig, null, 2)}
+                                                    </pre>
+                                                </div>
+                                            </details>
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex flex-wrap gap-3 pt-6 border-t">
+                                            <Button
+                                                variant="default"
+                                                size="sm"
+                                                onClick={() => sendFollowUpEmail(contactInfo)}
+                                                disabled={!contactInfo.email}
+                                            >
+                                                <Mail className="w-4 h-4 mr-2" />
+                                                Send Follow-up Email
+                                            </Button>
+
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => contactInfo.phone && window.open(`tel:${contactInfo.phone}`)}
+                                                disabled={!contactInfo.phone}
+                                            >
+                                                <Phone className="w-4 h-4 mr-2" />
+                                                Call Contact
+                                            </Button>
+
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => exportSingleConfiguration(selectedConfig)}
+                                            >
+                                                <Download className="w-4 h-4 mr-2" />
+                                                Export Configuration
+                                            </Button>
+
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => {
+                                                    const message = `Configuration ${selectedConfig.id} requires attention. Industry: ${selectedConfig.industryFocus || 'Not specified'}`;
+                                                    window.open(`https://slack.com/app_redirect?channel=C1234567890&message=${encodeURIComponent(message)}`);
+                                                }}
+                                            >
+                                                <Send className="w-4 h-4 mr-2" />
+                                                Notify Team
+                                            </Button>
+
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => copyConfigurationLink(selectedConfig.id)}
+                                            >
+                                                <Globe className="w-4 h-4 mr-2" />
+                                                Copy Link
+                                            </Button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-medium text-gray-600">Created</label>
-                                    <p className="text-sm">{format(new Date(selectedConfig.createdAt), 'PPP')}</p>
-                                </div>
-                                {selectedConfig.industryFocus && (
-                                    <div>
-                                        <label className="text-xs font-medium text-gray-600">Industry</label>
-                                        <p className="text-sm">{selectedConfig.industryFocus}</p>
-                                    </div>
-                                )}
-                                {selectedConfig.description && (
-                                    <div>
-                                        <label className="text-xs font-medium text-gray-600">Description</label>
-                                        <p className="text-sm">{selectedConfig.description}</p>
-                                    </div>
-                                )}
-                                <div>
-                                    <label className="text-xs font-medium text-gray-600">Contact Info</label>
-                                    <pre className="text-xs bg-gray-100 p-2 rounded mt-1 overflow-x-auto">
-                                        {selectedConfig.contactInfo}
-                                    </pre>
-                                </div>
-                            </div>
+                                );
+                            })()}
                         </CardContent>
                     </Card>
                 </div>
