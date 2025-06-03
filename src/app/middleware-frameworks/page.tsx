@@ -10,7 +10,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Layers, Zap, MessageSquare, Network, Brain, Code } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
-import { containerVariants, cardVariants, buttonVariants, checkboxVariants } from '@/lib/animations';
+import { checkboxVariants } from '@/lib/animations';
+import {
+  AnimatedButton,
+  AnimatedCard,
+  AnimatedContainer,
+  HoverScale,
+  LoadingSpinner
+} from "@/components/animated";
 
 const MiddlewareFrameworksPage = () => {
   const router = useRouter();
@@ -97,18 +104,15 @@ const MiddlewareFrameworksPage = () => {
       stepId="middleware-frameworks"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <motion.div
+        <AnimatedContainer
           className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          staggerDelay={0.1}
         >
           {frameworks.map((framework, index) => (
-            <motion.div
+            <AnimatedCard
               key={framework.value}
-              variants={cardVariants}
-              whileHover="hover"
-              whileTap="tap"
+              delay={index * 0.1}
+              enableHover={true}
             >
               <Card
                 className={`cursor-pointer transition-all duration-200 border-2 ${selectedFrameworks.includes(framework.value)
@@ -130,13 +134,11 @@ const MiddlewareFrameworksPage = () => {
                           className="mt-1 flex-shrink-0"
                         />
                       </motion.div>
-                      <motion.div
-                        className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                      >
-                        <framework.icon className="w-6 h-6 text-white" />
-                      </motion.div>
+                      <HoverScale scale={1.1}>
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                          <framework.icon className="w-6 h-6 text-white" />
+                        </div>
+                      </HoverScale>
                       <div className="flex-1 min-w-0">
                         <Label
                           htmlFor={framework.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
@@ -154,9 +156,9 @@ const MiddlewareFrameworksPage = () => {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </AnimatedCard>
           ))}
-        </motion.div>
+        </AnimatedContainer>
 
         <motion.div
           className="flex justify-center pt-6"
@@ -164,13 +166,7 @@ const MiddlewareFrameworksPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
-          <motion.div
-            variants={buttonVariants}
-            initial="initial"
-            whileHover="hover"
-            whileTap="tap"
-            animate={isSubmitting ? "loading" : "initial"}
-          >
+          <AnimatedButton>
             <Button
               type="submit"
               size="lg"
@@ -179,11 +175,7 @@ const MiddlewareFrameworksPage = () => {
             >
               {isSubmitting ? (
                 <>
-                  <motion.div
-                    className="rounded-full h-3 w-3 border-b-2 border-white mr-2"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
+                  <LoadingSpinner className="w-3 h-3 mr-2" />
                   Processing...
                 </>
               ) : (
@@ -198,7 +190,7 @@ const MiddlewareFrameworksPage = () => {
                 </>
               )}
             </Button>
-          </motion.div>
+          </AnimatedButton>
         </motion.div>
       </form>
     </PageLayout>

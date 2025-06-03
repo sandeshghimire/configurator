@@ -6,10 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Shield, Monitor, Globe, Smartphone, AlertTriangle, BarChart3 } from "lucide-react";
+import { ArrowRight, Shield, Monitor, Globe, Smartphone, AlertTriangle, BarChart3, Loader2 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
 import { toast } from 'sonner';
+import {
+  AnimatedButton,
+  AnimatedCard,
+  FadeIn,
+  SlideUp,
+  StaggeredList
+} from "@/components/animated";
 
 const KeyApplicationFeaturesPage = () => {
   const router = useRouter();
@@ -157,71 +164,80 @@ const KeyApplicationFeaturesPage = () => {
   >
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="text-red-600 bg-red-50 border border-red-200 rounded-md px-4 py-2 text-sm mb-2">
-          {error}
-        </div>
+        <FadeIn>
+          <div className="text-red-600 bg-red-50 border border-red-200 rounded-md px-4 py-2 text-sm mb-2">
+            {error}
+          </div>
+        </FadeIn>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {features.map((feature) => (
-          <Card
-            key={feature.value}
-            className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFeatures.includes(feature.value)
-              ? 'border-blue-500 bg-blue-50 shadow-md'
-              : 'border-gray-200 hover:border-gray-300'
-              }`}
-          >
-            <CardContent className="p-6 h-full">
-              <div className="flex flex-col h-full">
-                <div className="flex items-start space-x-4 mb-4">
-                  <Checkbox
-                    id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                    checked={selectedFeatures.includes(feature.value)}
-                    onCheckedChange={() => handleFeatureToggle(feature.value)}
-                    className="mt-1 flex-shrink-0"
-                  />
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-                    <feature.icon className="w-6 h-6 text-white" />
+      <SlideUp delay={0.1}>
+        <StaggeredList className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <AnimatedCard key={feature.value} delay={0.1 + index * 0.1}>
+              <Card
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${selectedFeatures.includes(feature.value)
+                  ? 'border-blue-500 bg-blue-50 shadow-md'
+                  : 'border-gray-200 hover:border-gray-300'
+                  }`}
+              >
+                <CardContent className="p-6 h-full">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <Checkbox
+                        id={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                        checked={selectedFeatures.includes(feature.value)}
+                        onCheckedChange={() => handleFeatureToggle(feature.value)}
+                        className="mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                        <feature.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <Label
+                          htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                          className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
+                        >
+                          {feature.title}
+                        </Label>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <Label
-                      htmlFor={feature.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-                      className="font-semibold text-lg cursor-pointer text-gray-900 block leading-tight"
-                    >
-                      {feature.title}
-                    </Label>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          ))}
+        </StaggeredList>
+      </SlideUp>
 
-      <div className="flex justify-center pt-6">
-        <Button
-          type="submit"
-          size="lg"
-          disabled={isSubmitting}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
-        >
-          {isSubmitting ? (
-            <>
-              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
-              Processing...
-            </>
-          ) : (
-            <>
-              Continue to Hardware Requirements
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </>
-          )}
-        </Button>
-      </div>
+      <FadeIn delay={0.4}>
+        <div className="flex justify-center pt-6">
+          <AnimatedButton>
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isSubmitting}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="animate-spin rounded-full h-4 w-4 mr-2" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Continue to Hardware Requirements
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </>
+              )}
+            </Button>
+          </AnimatedButton>
+        </div>
+      </FadeIn>
     </form>
   </PageLayout>
   );

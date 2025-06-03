@@ -6,6 +6,7 @@ import { CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { progressVariants, fadeInVariants } from '@/lib/animations';
+import { FadeIn, ScaleIn, HoverScale } from '@/components/animated';
 
 interface ProgressIndicatorProps {
     currentStep: string;
@@ -34,7 +35,7 @@ export default function ProgressIndicator({ currentStep, completedSteps }: Progr
         <div className="bg-white border-b border-gray-200 px-4 py-3">
             <div className="max-w-7xl mx-auto">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+                    <FadeIn className="flex items-center space-x-4">
                         <h2 className="text-sm font-medium text-gray-900">
                             Configuration Progress
                         </h2>
@@ -42,14 +43,18 @@ export default function ProgressIndicator({ currentStep, completedSteps }: Progr
                             <span className="text-sm text-gray-500">
                                 Step {currentStepIndex + 1} of {steps.length}
                             </span>
-                            <div className="w-32 bg-gray-200 rounded-full h-2">
-                                <div
-                                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                    style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
+                            <div className="w-32 bg-gray-200 rounded-full h-2 overflow-hidden">
+                                <motion.div
+                                    className="bg-blue-600 h-2 rounded-full"
+                                    initial={{ width: 0 }}
+                                    animate={{
+                                        width: `${((currentStepIndex + 1) / steps.length) * 100}%`
+                                    }}
+                                    transition={{ duration: 0.6, ease: "easeInOut" }}
                                 />
                             </div>
                         </div>
-                    </div>
+                    </FadeIn>
                     <div className="hidden md:flex items-center space-x-1">
                         {steps.map((step, index) => {
                             const isCompleted = completedSteps.includes(step.id);
@@ -59,35 +64,47 @@ export default function ProgressIndicator({ currentStep, completedSteps }: Progr
                             return (
                                 <div key={step.id} className="flex items-center">
                                     {isAccessible ? (
-                                        <Link href={step.href}>
-                                            <button
-                                                className={cn(
-                                                    "flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-colors",
-                                                    isCurrent
-                                                        ? "bg-blue-600 text-white"
-                                                        : isCompleted
-                                                            ? "bg-green-600 text-white"
-                                                            : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                                                )}
+                                        <HoverScale scale={1.1}>
+                                            <Link href={step.href}>
+                                                <motion.button
+                                                    className={cn(
+                                                        "flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium",
+                                                        isCurrent
+                                                            ? "bg-blue-600 text-white"
+                                                            : isCompleted
+                                                                ? "bg-green-600 text-white"
+                                                                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                                                    )}
+                                                    variants={progressVariants}
+                                                    initial="inactive"
+                                                    animate={isCurrent ? "active" : isCompleted ? "completed" : "inactive"}
+                                                    title={step.title}
+                                                >
+                                                    {isCompleted ? (
+                                                        <CheckCircle className="w-4 h-4" />
+                                                    ) : (
+                                                        <span>{index + 1}</span>
+                                                    )}
+                                                </motion.button>
+                                            </Link>
+                                        </HoverScale>
+                                    ) : (
+                                        <ScaleIn delay={index * 0.05}>
+                                            <div
+                                                className="flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium bg-gray-100 text-gray-400"
                                                 title={step.title}
                                             >
-                                                {isCompleted ? (
-                                                    <CheckCircle className="w-4 h-4" />
-                                                ) : (
-                                                    <span>{index + 1}</span>
-                                                )}
-                                            </button>
-                                        </Link>
-                                    ) : (
-                                        <div
-                                            className="flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium bg-gray-100 text-gray-400"
-                                            title={step.title}
-                                        >
-                                            <span>{index + 1}</span>
-                                        </div>
+                                                <span>{index + 1}</span>
+                                            </div>
+                                        </ScaleIn>
                                     )}
                                     {index < steps.length - 1 && (
-                                        <div className="w-8 h-px bg-gray-200 mx-1" />
+                                        <motion.div
+                                            className="w-8 h-px bg-gray-200 mx-1"
+                                            initial={{ scaleX: 0 }}
+                                            animate={{ scaleX: 1 }}
+                                            transition={{ delay: index * 0.1, duration: 0.3 }}
+                                        />
                                     )}
                                 </div>
                             );

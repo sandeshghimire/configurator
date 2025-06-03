@@ -10,6 +10,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, FileText, Edit, Loader2 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import { useConfigurator } from "@/components/configurator-context";
+import {
+    AnimatedButton,
+    AnimatedCard,
+    FadeIn,
+    SlideUp,
+    LoadingSpinner
+} from "@/components/animated";
 
 const ConfigurationDetailsPage = () => {
     const router = useRouter();
@@ -68,88 +75,100 @@ const ConfigurationDetailsPage = () => {
             stepId="configuration-details"
         >
             <div className="w-full max-w-2xl mx-auto">
-                <Card className="shadow-sm">
-                    <CardContent className="p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="title" className="flex items-center space-x-2">
-                                        <Edit className="h-4 w-4" />
-                                        <span>Configuration Title *</span>
-                                    </Label>
-                                    <Input
-                                        id="title"
-                                        value={configDetails.title}
-                                        onChange={(e) => handleInputChange('title', e.target.value)}
-                                        placeholder="Enter a descriptive title for your SOC configuration"
-                                        className="w-full"
-                                        required
-                                    />
-                                    <p className="text-xs text-muted-foreground">
-                                        Choose a clear, descriptive title that will help you identify this configuration later.
-                                    </p>
+                <AnimatedCard delay={0.1}>
+                    <Card className="shadow-sm">
+                        <CardContent className="p-6">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="space-y-4">
+                                    <SlideUp delay={0.2}>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="title" className="flex items-center space-x-2">
+                                                <Edit className="h-4 w-4" />
+                                                <span>Configuration Title *</span>
+                                            </Label>
+                                            <Input
+                                                id="title"
+                                                value={configDetails.title}
+                                                onChange={(e) => handleInputChange('title', e.target.value)}
+                                                placeholder="Enter a descriptive title for your SOC configuration"
+                                                className="w-full"
+                                                required
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Choose a clear, descriptive title that will help you identify this configuration later.
+                                            </p>
+                                        </div>
+                                    </SlideUp>
+
+                                    <SlideUp delay={0.3}>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="description" className="flex items-center space-x-2">
+                                                <FileText className="h-4 w-4" />
+                                                <span>Configuration Description (Optional)</span>
+                                            </Label>
+                                            <Textarea
+                                                id="description"
+                                                value={configDetails.description}
+                                                onChange={(e) => handleInputChange('description', e.target.value)}
+                                                placeholder="Provide additional details about your SOC configuration requirements, goals, or any specific constraints"
+                                                className="h-32 resize-none"
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Add any additional context that might help our team better understand your requirements.
+                                            </p>
+                                        </div>
+                                    </SlideUp>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="description" className="flex items-center space-x-2">
-                                        <FileText className="h-4 w-4" />
-                                        <span>Configuration Description (Optional)</span>
-                                    </Label>
-                                    <Textarea
-                                        id="description"
-                                        value={configDetails.description}
-                                        onChange={(e) => handleInputChange('description', e.target.value)}
-                                        placeholder="Provide additional details about your SOC configuration requirements, goals, or any specific constraints"
-                                        className="h-32 resize-none"
-                                    />
-                                    <p className="text-xs text-muted-foreground">
-                                        Add any additional context that might help our team better understand your requirements.
-                                    </p>
-                                </div>
-                            </div>
+                                <FadeIn delay={0.4}>
+                                    <Card className="bg-blue-50 border-blue-200">
+                                        <CardContent className="p-4">
+                                            <div className="flex items-start space-x-4">
+                                                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <FileText className="w-5 h-5 text-blue-600" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="font-medium text-blue-900 mb-2">Why provide these details?</h3>
+                                                    <ul className="text-sm text-blue-800 space-y-1">
+                                                        <li>• Helps organize and identify your configurations</li>
+                                                        <li>• Enables better tracking and management</li>
+                                                        <li>• Assists our team in providing targeted recommendations</li>
+                                                        <li>• Useful for future reference and comparisons</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </FadeIn>
 
-                            <Card className="bg-blue-50 border-blue-200">
-                                <CardContent className="p-4">
-                                    <div className="flex items-start space-x-4">
-                                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <FileText className="w-5 h-5 text-blue-600" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <h3 className="font-medium text-blue-900 mb-2">Why provide these details?</h3>
-                                            <ul className="text-sm text-blue-800 space-y-1">
-                                                <li>• Helps organize and identify your configurations</li>
-                                                <li>• Enables better tracking and management</li>
-                                                <li>• Assists our team in providing targeted recommendations</li>
-                                                <li>• Useful for future reference and comparisons</li>
-                                            </ul>
-                                        </div>
+                                <FadeIn delay={0.5}>
+                                    <div className="flex justify-center pt-4">
+                                        <AnimatedButton>
+                                            <Button
+                                                type="submit"
+                                                size="lg"
+                                                disabled={!isFormValid || isSubmitting}
+                                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+                                            >
+                                                {isSubmitting ? (
+                                                    <>
+                                                        <Loader2 className="animate-spin rounded-full h-4 w-4 mr-2" />
+                                                        Saving...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        Continue to Step 2: Industry Focus
+                                                        <ArrowRight className="ml-2 w-4 h-4" />
+                                                    </>
+                                                )}
+                                            </Button>
+                                        </AnimatedButton>
                                     </div>
-                                </CardContent>
-                            </Card>
-
-                            <div className="flex justify-center pt-4">
-                                <Button
-                                    type="submit"
-                                    size="lg"
-                                    disabled={!isFormValid || isSubmitting}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
-                                >
-                                    {isSubmitting ? (
-                                        <>
-                                            <Loader2 className="animate-spin rounded-full h-4 w-4 mr-2" />
-                                            Saving...
-                                        </>
-                                    ) : (
-                                        <>
-                                            Continue to Step 2: Industry Focus
-                                            <ArrowRight className="ml-2 w-4 h-4" />
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
+                                </FadeIn>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </AnimatedCard>
             </div>
         </PageLayout>
     );

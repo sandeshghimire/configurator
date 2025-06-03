@@ -306,3 +306,81 @@ export const tooltipVariants: Variants = {
         },
     },
 };
+
+// List item animation variants
+export const listItemVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        x: -20,
+    },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 24,
+        },
+    },
+};
+
+// Bounce animation for success states
+export const bounceVariants: Variants = {
+    initial: { scale: 1 },
+    bounce: {
+        scale: [1, 1.25, 1],
+        transition: {
+            duration: 0.6,
+            ease: "easeInOut",
+        },
+    },
+};
+
+// Pulse animation for loading states
+export const pulseVariants: Variants = {
+    initial: { opacity: 1 },
+    pulse: {
+        opacity: [1, 0.5, 1],
+        transition: {
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+        },
+    },
+};
+
+// Typewriter effect for text
+export const typewriterVariants: Variants = {
+    hidden: { width: 0 },
+    visible: {
+        width: "auto",
+        transition: {
+            duration: 0.8,
+            ease: "easeInOut",
+        },
+    },
+};
+
+// Common transition presets
+export const transitions = {
+    spring: {
+        type: "spring" as const,
+        stiffness: 400,
+        damping: 17,
+    },
+    smooth: {
+        type: "tween" as const,
+        ease: "easeInOut" as const,
+        duration: 0.3,
+    },
+    quick: {
+        type: "tween" as const,
+        ease: "easeOut" as const,
+        duration: 0.2,
+    },
+    slow: {
+        type: "tween" as const,
+        ease: "easeInOut" as const,
+        duration: 0.6,
+    },
+};
