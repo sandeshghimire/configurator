@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 export async function POST(request: NextRequest) {
     try {
         console.log('API: Starting configuration submission');
-        
+
         const formData = await request.json();
         console.log('API: Received form data:', JSON.stringify(formData, null, 2));
 

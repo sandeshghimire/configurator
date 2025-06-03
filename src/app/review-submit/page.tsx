@@ -130,14 +130,14 @@ const ReviewSubmitPage = () => {
       'hybrid-cloud': 'Hybrid Cloud Architecture',
       'edge-computing': 'Edge Computing Focus',
       'on-premise': 'On-Premise Solution',
-      
+
       // IoT integration options
       'direct-cloud': 'Direct Cloud Integration',
       'gateway-based': 'Gateway-Based Architecture',
       'mesh-networking': 'Mesh Networking',
       'no-iot': 'No IoT Integration Required'
     };
-    
+
     return labelMappings[value] || value;
   };
 
@@ -448,12 +448,12 @@ const ReviewSubmitPage = () => {
       description: 'Cloud integration and connectivity approach',
       editLink: '/cloud-connectivity-strategy',
       renderContent: () => {
-        const hasCloudData = formData.cloudStrategy || 
-                           (formData.cloudPlatforms && formData.cloudPlatforms.length > 0) || 
-                           formData.iotIntegration || 
-                           (formData.dataProcessing && formData.dataProcessing.length > 0);
+        const hasCloudData = formData.cloudStrategy ||
+          (formData.cloudPlatforms && formData.cloudPlatforms.length > 0) ||
+          formData.iotIntegration ||
+          (formData.dataProcessing && formData.dataProcessing.length > 0);
         if (!hasCloudData) return null;
-        
+
         return (
           <div className="space-y-4">
             {formData.cloudStrategy && (
@@ -470,7 +470,7 @@ const ReviewSubmitPage = () => {
                 )}
               </div>
             )}
-            
+
             {formData.cloudPlatforms && formData.cloudPlatforms.length > 0 && (
               <div>
                 <p className="text-sm text-gray-600 mb-3">Cloud Platforms</p>
@@ -694,7 +694,7 @@ const ReviewSubmitPage = () => {
               <p className="text-sm text-gray-600">Complete</p>
             </div>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-4 text-sm">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-blue-600" />
