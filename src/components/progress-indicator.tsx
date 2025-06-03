@@ -14,10 +14,11 @@ interface ProgressIndicatorProps {
 
 const steps = [
     { id: 'home', title: 'Welcome', href: '/' },
-    { id: 'industry-focus', title: 'Industry', href: '/industry-focus' },
-    { id: 'core-platform-selection', title: 'Platform', href: '/core-platform-selection' },
-    { id: 'operating-system-choice', title: 'OS', href: '/operating-system-choice' },
-    { id: 'key-application-features', title: 'Features', href: '/key-application-features' },
+    { id: 'configuration-details', title: '1. Details', href: '/configuration-details' },
+    { id: 'industry-focus', title: '2. Industry', href: '/industry-focus' },
+    { id: 'core-platform-selection', title: '3. Platform', href: '/core-platform-selection' },
+    { id: 'operating-system-choice', title: '4. OS', href: '/operating-system-choice' },
+    { id: 'key-application-features', title: '5. Features', href: '/key-application-features' },
     { id: 'hardware-peripheral-requirements', title: 'Hardware', href: '/hardware-peripheral-requirements' },
     { id: 'middleware-frameworks', title: 'Middleware', href: '/middleware-frameworks' },
     { id: 'driver-development-needs', title: 'Drivers', href: '/driver-development-needs' },

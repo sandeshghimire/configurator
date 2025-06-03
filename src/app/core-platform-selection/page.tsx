@@ -146,7 +146,7 @@ const CorePlatformSelectionPage = () => {
               </>
             ) : (
               <>
-                Continue to Operating System
+                Continue to Step 4: Operating System
                 <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}

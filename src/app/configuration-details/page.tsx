@@ -141,7 +141,7 @@ const ConfigurationDetailsPage = () => {
                                         </>
                                     ) : (
                                         <>
-                                            Continue to Industry Focus
+                                            Continue to Step 2: Industry Focus
                                             <ArrowRight className="ml-2 w-4 h-4" />
                                         </>
                                     )}

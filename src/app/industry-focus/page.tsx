@@ -180,7 +180,7 @@ const IndustryFocusPage = () => {
               </>
             ) : (
               <>
-                Continue to Platform Selection
+                Continue to Step 3: Platform Selection
                 <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}

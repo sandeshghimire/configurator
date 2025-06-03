@@ -150,7 +150,7 @@ const OperatingSystemChoicePage = () => {
               </>
             ) : (
               <>
-                Continue to Key Features
+                Continue to Step 5: Key Features
                 <ArrowRight className="ml-2 w-4 h-4" />
               </>
             )}
