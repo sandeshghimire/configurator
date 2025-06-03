@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { spinnerVariants, modalVariants, scaleInVariants } from '@/lib/animations';
 
 interface LoadingState {
     [key: string]: boolean;
@@ -78,8 +80,23 @@ export function LoadingSpinner({
 
     return (
         <div className={`flex items-center justify-center gap-2 ${className}`}>
-            <Loader2 className={`animate-spin ${sizeClasses[size]}`} />
-            {text && <span className="text-sm text-gray-600">{text}</span>}
+            <motion.div
+                variants={spinnerVariants}
+                animate="end"
+                className={sizeClasses[size]}
+            >
+                <Loader2 className="w-full h-full" />
+            </motion.div>
+            {text && (
+                <motion.span
+                    className="text-sm text-gray-600"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    {text}
+                </motion.span>
+            )}
         </div>
     );
 }
@@ -94,12 +111,23 @@ export function PageLoading({ isLoading, text = 'Loading...' }: PageLoadingProps
     if (!isLoading) return null;
 
     return (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-6 flex items-center gap-3">
+        <motion.div
+            className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center"
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+        >
+            <motion.div
+                className="bg-white rounded-lg shadow-lg p-6 flex items-center gap-3"
+                variants={scaleInVariants}
+                initial="hidden"
+                animate="visible"
+            >
                 <LoadingSpinner size="md" />
                 <span className="text-gray-700">{text}</span>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }
 

@@ -3,7 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { progressVariants, fadeInVariants } from '@/lib/animations';
 
 interface ProgressIndicatorProps {
     currentStep: string;
