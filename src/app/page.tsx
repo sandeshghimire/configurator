@@ -40,21 +40,21 @@ export default function Home() {
       description=""
       stepId="home"
     >
-      <div className="space-y-12"> {/* Reduced from space-y-16 */}
+      <div className="space-y-8">
         {/* Hero Section */}
-        <div className="text-center space-y-6"> {/* Reduced from space-y-8 */}
-          <div className="space-y-4"> {/* Reduced from space-y-6 */}
-            <div className="inline-flex items-center px-3 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-2"> {/* Reduced mb-3 to mb-2 */}
+        <div className="text-center space-y-4">
+          <div className="space-y-3">
+            <div className="inline-flex items-center px-2 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-1">
               <Sparkles className="w-3 h-3 mr-1" />
               AI-Powered Configuration
             </div>
-            <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl xl:text-5xl">
+            <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl xl:text-4xl">
               SOC Product
               <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Configurator
               </span>
             </h1>
-            <p className="text-base text-muted-foreground max-w-3xl mx-auto leading-6">
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-5">
               Answer a few questions to help us understand your project requirements and generate
               a tailored embedded system configuration with expert recommendations.
             </p>
@@ -62,23 +62,23 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className="space-y-6"> {/* Reduced from space-y-8 */}
-          <div className="text-center space-y-3"> {/* Reduced from space-y-4 */}
-            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+        <div className="space-y-4">
+          <div className="text-center space-y-2">
+            <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">
               Why Choose Our Configurator?
             </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-6">
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-5">
               Built by embedded systems experts to simplify your development process
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"> {/* Changed md:grid-cols-2 to md:grid-cols-4, added sm:grid-cols-2 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {features.map((feature, index) => (
-              <Card key={index} className="border hover:border-muted-foreground/50 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <CardContent className="p-6 flex flex-col items-center text-center"> {/* Added flex flex-col items-center text-center */}
-                  <div className="space-y-1"> {/* Reduced from space-y-3, removed icon div */}
-                    <h3 className="scroll-m-20 text-lg font-semibold tracking-tight">{feature.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-6">{feature.description}</p>
+              <Card key={index} className="border hover:border-muted-foreground/50 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <div className="space-y-1">
+                    <h3 className="scroll-m-20 text-base font-semibold tracking-tight">{feature.title}</h3>
+                    <p className="text-muted-foreground text-xs leading-5">{feature.description}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -88,37 +88,37 @@ export default function Home() {
 
         {/* Enhanced Call to Action */}
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl opacity-5"></div>
-          <div className="relative bg-background border rounded-2xl p-10 text-center space-y-6"> {/* Reduced p-12 to p-10 and space-y-8 to space-y-6 */}
-            <div className="space-y-3"> {/* Reduced from space-y-4 */}
-              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl opacity-5"></div>
+          <div className="relative bg-background border rounded-xl p-6 text-center space-y-4">
+            <div className="space-y-2">
+              <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">
                 Ready to Configure Your Embedded System?
               </h2>
-              <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-6">
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-5">
                 Our intelligent configurator will guide you through selecting the optimal components
                 for your embedded system project, from hardware platforms to software frameworks.
               </p>
             </div>
 
-            <div className="space-y-4"> {/* Reduced from space-y-6 */}
+            <div className="space-y-3">
               <Link href="/configuration-details" passHref>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button size="default" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
                   Start Configuration
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
 
-              <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground"> {/* Reduced space-x-6 to space-x-4 */}
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="flex items-center justify-center space-x-3 text-xs text-muted-foreground">
+                <div className="flex items-center space-x-1">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                   <span className="font-medium">Auto-save progress</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
                   <span className="font-medium">Free to use</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
                   <span className="font-medium">Expert validated</span>
                 </div>
               </div>
@@ -127,9 +127,9 @@ export default function Home() {
         </div>
 
         {/* Trust Indicators */}
-        <div className="text-center space-y-2 py-4 border-t"> {/* Reduced space-y-3 to space-y-2 and py-6 to py-4 */}
+        <div className="text-center space-y-1 py-3 border-t">
           <p className="text-xs font-medium">Trusted by embedded systems engineers worldwide</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"> {/* Reduced space-x-6 to gap-x-4, added flex-wrap and gap-y-1 */}
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className="font-medium">🏭 Industrial IoT</span>
             <span className="font-medium">🚗 Automotive</span>
             <span className="font-medium">🏥 Medical Devices</span>
