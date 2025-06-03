@@ -79,7 +79,7 @@ const OperatingSystemChoicePage = () => {
 
   return (
     <PageLayout
-      title="Select Operating System"
+      title="Step 4: Select Operating System"
       description="Choose the operating system that best matches your application requirements and development approach."
       stepId="operating-system-choice"
     >

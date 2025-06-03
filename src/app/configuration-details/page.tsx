@@ -63,7 +63,7 @@ const ConfigurationDetailsPage = () => {
 
     return (
         <PageLayout
-            title="Configuration Details"
+            title="Step 1: Configuration Details"
             description="Give your SOC configuration a title and description to help identify it later."
             stepId="configuration-details"
         >

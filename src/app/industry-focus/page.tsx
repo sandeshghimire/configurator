@@ -93,7 +93,7 @@ const IndustryFocusPage = () => {
 
   return (
     <PageLayout
-      title="Select Your Industry"
+      title="Step 2: Select Your Industry"
       description="Choose the industry that best describes your embedded system project. This helps us provide more targeted recommendations."
       stepId="industry-focus"
     >

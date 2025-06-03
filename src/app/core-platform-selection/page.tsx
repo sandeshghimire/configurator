@@ -81,7 +81,7 @@ const CorePlatformSelectionPage = () => {
 
   return (
     <PageLayout
-      title="Select Core Platform"
+      title="Step 3: Select Core Platform"
       description="Choose the hardware platform(s) that best fit your embedded system requirements. You can select multiple options."
       stepId="core-platform-selection"
     >
